@@ -6,7 +6,7 @@ using Random = System.Random;
 public class GroundController : MonoBehaviour
 {
     public int lanes = 3;
-    public float speed = 0.7f;
+    public float speed = 0.5f;
     public GameObject spawnerPrefab;
     private GameObject[] spawners;
 
