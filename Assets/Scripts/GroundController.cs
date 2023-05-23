@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
+using System.Linq;
 
 public class GroundController : MonoBehaviour
 {
     public int lanes = 3;
-    public float speed = 0.5f;
+    public float speed = 1f;
     public GameObject spawnerPrefab;
     private GameObject[] spawners;
+    private bool[] lanesOccupied;
+    private int resetTimer = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         spawners = new GameObject[lanes];
+        lanesOccupied = new bool[lanes];
         for (int i=0; i<lanes; i++)
         {
             int factor = i - (lanes / 2);
@@ -28,13 +32,24 @@ public class GroundController : MonoBehaviour
     void Update()
     {
         Random rnd = new Random();
-        foreach (GameObject spawner in spawners)
+        for (int i=0; i<lanes; i++)
         {
+            if(lanesOccupied.Where(c => c).Count() == lanes - 1)
+            {
+                break;
+            }
             if (rnd.Next(100) < 1)
             {
-                spawner.GetComponent<SpawnController>().trigger();
+                spawners[i].GetComponent<SpawnController>().trigger();
+                lanesOccupied[i] = true;
+                resetTimer = 0;
             }
         }
+        if (resetTimer > 60)
+        {
+            lanesOccupied = new bool[lanes];
+        }
+        resetTimer += 1;
     }
     
     public float getLaneDistance()
