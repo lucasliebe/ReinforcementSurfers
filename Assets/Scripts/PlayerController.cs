@@ -61,4 +61,14 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPosition;
     }
+
+	void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Obstacle")
+        {
+			Debug.Log("Game Over!");
+			UnityEditor.EditorApplication.isPlaying = false;
+            // Application.Quit();
+        }
+	}
 }
