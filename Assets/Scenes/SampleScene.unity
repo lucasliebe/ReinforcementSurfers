@@ -464,6 +464,7 @@ MonoBehaviour:
   lanes: 3
   speed: 0.5
   spawnerPrefab: {fileID: 321550200316889854, guid: d877e84c6668e95e6afa8284dd97a054, type: 3}
+  trashcanPrefab: {fileID: 321550200316889854, guid: 58bd5bcb9195d2c9a9e652b120288123, type: 3}
 --- !u!65 &1914839609
 BoxCollider:
   m_ObjectHideFlags: 0

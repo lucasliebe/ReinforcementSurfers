@@ -9,6 +9,7 @@ public class GroundController : MonoBehaviour
     public int lanes = 3;
     public float speed = 1f;
     public GameObject spawnerPrefab;
+    public GameObject trashcanPrefab;
     private GameObject[] spawners;
     private bool[] lanesOccupied;
     private int resetTimer = 0;
@@ -26,6 +27,8 @@ public class GroundController : MonoBehaviour
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
             spawners[i] = spawner;
         }
+        GameObject trashcan = Instantiate(trashcanPrefab, new Vector3(0, 2.5f, -50), Quaternion.identity);
+        trashcan.transform.localScale += new Vector3(transform.localScale.x, 0, 0);
     }
 
     // Update is called once per frame
