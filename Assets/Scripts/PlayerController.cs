@@ -5,14 +5,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private GroundController groundController;
-    private int desiredLane = 0; // 0 = left, higher = right
+    private int desiredLane = 1; // 0 = left, higher = right
 
-    private int currentLane = 0;
+    private int currentLane = 1;
 
     // Start is called before the first frame update
     void Start()
     {
         groundController = GameObject.Find("Ground").GetComponent<GroundController>();
+		transform.position += Vector3.right * groundController.getLaneDistance();
     }
 
     // Update is called once per frame
