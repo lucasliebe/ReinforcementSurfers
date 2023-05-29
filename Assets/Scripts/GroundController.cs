@@ -32,7 +32,7 @@ public class GroundController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Random rnd = new Random();
         for (int i=0; i<lanes; i++)
