@@ -11,24 +11,47 @@ public class GroundController : MonoBehaviour
     public GameObject spawnerPrefab;
     public GameObject trashcanPrefab;
     private GameObject[] spawners;
+    private GameObject trashcan;
     private bool[] lanesOccupied;
     private int resetTimer = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        Setup();
+    }
+
+    public void Setup()
+    {
         spawners = new GameObject[lanes];
         lanesOccupied = new bool[lanes];
         for (int i=0; i<lanes; i++)
         {
             int factor = i - (lanes / 2);
-            float offset = transform.localScale.z - 10; // - 10 is the position for the camera
-            GameObject spawner = Instantiate(spawnerPrefab, new Vector3(0+getLaneDistance()*factor, 1.5f, offset), Quaternion.identity);
+            float offset = transform.localScale.z / 2;
+            GameObject spawner = Instantiate(spawnerPrefab, transform.position + new Vector3(0+getLaneDistance()*factor, 1.5f, offset), Quaternion.identity, transform.parent);
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
             spawners[i] = spawner;
         }
-        GameObject trashcan = Instantiate(trashcanPrefab, new Vector3(0, 2.5f, -50), Quaternion.identity);
+        trashcan = Instantiate(trashcanPrefab, transform.position + new Vector3(0, 2.5f, -50), Quaternion.identity, transform.parent);
         trashcan.transform.localScale += new Vector3(transform.localScale.x, 0, 0);
+    }
+
+    public void Cleanup()
+    {
+        Time.timeScale = 0;
+        foreach (var spawner in spawners)
+        {
+            Destroy(spawner);
+        }
+        Destroy(trashcan);
+        Transform parentT = transform.parent;
+        foreach (Transform childT in parentT)
+        {
+            if(childT.CompareTag("Obstacle")) Destroy(childT.gameObject);
+        }
+        parentT.Find("Player").GetComponent<PlayerController>().Reset();
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame

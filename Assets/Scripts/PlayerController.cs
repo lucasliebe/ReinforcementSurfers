@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool isCollided = false;
+    
     private GroundController groundController;
-    private int desiredLane = 1; // 0 = left, higher = right
+    public int desiredLane = 1; // 0 = left, higher = right
 
     private int currentLane = 1;
 
@@ -13,7 +16,14 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         groundController = GameObject.Find("Ground").GetComponent<GroundController>();
-		transform.position += Vector3.right * groundController.getLaneDistance();
+    }
+
+    public void Reset()
+    {
+        isCollided = false;
+        desiredLane = 1;
+        currentLane = 1;
+        transform.localPosition = new Vector3(0, 1.1f, -6);
     }
 
     // Update is called once per frame
@@ -30,9 +40,9 @@ public class PlayerController : MonoBehaviour
         MoveLane();
     }
     
-    private void MoveLane()
+    public void MoveLane()
     {
-        Vector3 targetPosition = transform.position;
+        Vector3 targetPosition = transform.localPosition;
         int change = desiredLane - currentLane;
         if (change == 1)
         {
@@ -59,15 +69,16 @@ public class PlayerController : MonoBehaviour
                 currentLane--;
             }
         }
-        transform.position = targetPosition;
+        transform.localPosition = targetPosition;
     }
 
 	void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Obstacle")
+        if (!isCollided && collision.gameObject.CompareTag("Obstacle"))
         {
 			Debug.Log("Game Over!");
-			UnityEditor.EditorApplication.isPlaying = false;
+            isCollided = true;
+            // UnityEditor.EditorApplication.isPlaying = false;
             // Application.Quit();
         }
 	}

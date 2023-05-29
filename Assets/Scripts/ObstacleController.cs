@@ -14,6 +14,6 @@ public class ObstacleController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position += new Vector3(0,0,-speed);
+        transform.localPosition += new Vector3(0,0,-speed);
     }
 }
