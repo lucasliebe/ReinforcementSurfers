@@ -22,7 +22,7 @@ public class GroundController : MonoBehaviour
         for (int i=0; i<lanes; i++)
         {
             int factor = i - (lanes / 2);
-            float offset = transform.localScale.z - transform.position.z;
+            float offset = transform.localScale.z - 10; // - 10 is the position for the camera
             GameObject spawner = Instantiate(spawnerPrefab, new Vector3(0+getLaneDistance()*factor, 1.5f, offset), Quaternion.identity);
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
             spawners[i] = spawner;
