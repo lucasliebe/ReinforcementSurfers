@@ -32,7 +32,7 @@ public class PlayerAgent : Agent
             EndEpisode();
         }
         AddReward(0.01f);
-        _playerController.desiredLane += (actions.DiscreteActions[0] - 1);
+        _playerController.desiredLane = actions.DiscreteActions[0];
         _playerController.MoveLane();
     }
 }

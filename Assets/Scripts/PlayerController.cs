@@ -42,34 +42,10 @@ public class PlayerController : MonoBehaviour
     
     public void MoveLane()
     {
-        Vector3 targetPosition = transform.localPosition;
+        desiredLane = Math.Clamp(desiredLane, 0, groundController.lanes - 1);
         int change = desiredLane - currentLane;
-        if (change == 1)
-        {
-            if (desiredLane > groundController.lanes - 1)
-            {
-                desiredLane = groundController.lanes - 1;
-            }
-
-            else
-            {
-                targetPosition += Vector3.right * groundController.getLaneDistance();
-                currentLane++;
-            }
-        }
-        else if (change == -1)
-        {
-            if (desiredLane < 0)
-            {
-                desiredLane = 0;
-            }
-            else
-            {
-                targetPosition += Vector3.left * groundController.getLaneDistance();
-                currentLane--;
-            }
-        }
-        transform.localPosition = targetPosition;
+        currentLane = desiredLane;
+        transform.localPosition += Vector3.right * (change * groundController.getLaneDistance());
     }
 
 	void OnCollisionEnter(Collision collision)
