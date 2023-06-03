@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool isCollided = false;
-    
     private GroundController groundController;
-    public int desiredLane = 1; // 0 = left, higher = right
-
+    private int desiredLane = 1; // 0 = left, higher = right
     private int currentLane = 1;
+    private bool isCollided = false;
 
     // Start is called before the first frame update
     void Start()
@@ -47,8 +45,18 @@ public class PlayerController : MonoBehaviour
         currentLane = desiredLane;
         transform.localPosition += Vector3.right * (change * groundController.getLaneDistance());
     }
+    
+    public void SetDesiredLane(int lane)
+    {
+        desiredLane = lane;
+    }
 
-	void OnCollisionEnter(Collision collision)
+    public bool GetState()
+    {
+        return isCollided;
+    }
+
+    void OnCollisionEnter(Collision collision)
     {
         if (!isCollided && collision.gameObject.CompareTag("Obstacle"))
         {

@@ -26,13 +26,13 @@ public class PlayerAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        if (_playerController.isCollided) 
+        if (_playerController.GetState()) 
         {
             AddReward(-10f);
             EndEpisode();
         }
         AddReward(0.01f);
-        _playerController.desiredLane = actions.DiscreteActions[0];
+        _playerController.SetDesiredLane(actions.DiscreteActions[0]);
         _playerController.MoveLane();
     }
 }
