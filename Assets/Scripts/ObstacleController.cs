@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObstacleController : MonoBehaviour
 {
-    public float speed = 1f;
+    private float speed = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,5 +15,10 @@ public class ObstacleController : MonoBehaviour
     void FixedUpdate()
     {
         transform.localPosition += new Vector3(0,0,-speed);
+    }
+    
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
     }
 }

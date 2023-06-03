@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private int desiredLane = 1; // 0 = left, higher = right
     private int currentLane = 1;
     private bool isCollided = false;
+    private int score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -51,14 +52,21 @@ public class PlayerController : MonoBehaviour
         desiredLane = lane;
     }
 
-    public bool GetState()
+    public Tuple<bool, int> GetState()
     {
-        return isCollided;
+        Tuple<bool, int> state = new Tuple<bool, int>(isCollided, score);
+        score = 0;
+        return state;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!isCollided && collision.gameObject.CompareTag("Obstacle"))
+        if (!isCollided && collision.gameObject.CompareTag("Coin"))
+        {
+            score++;
+            Destroy(collision.gameObject);
+        }
+        else if (!isCollided && collision.gameObject.CompareTag("Obstacle"))
         {
 			Debug.Log("Game Over!");
             isCollided = true;

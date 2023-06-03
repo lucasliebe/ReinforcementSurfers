@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using Unity.VisualScripting;
 
 public class PlayerAgent : Agent
 {
@@ -26,7 +28,9 @@ public class PlayerAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        if (_playerController.GetState()) 
+        Tuple<bool, int> state = _playerController.GetState();
+        AddReward(state.Item2 * 1f);
+        if (state.Item1) 
         {
             AddReward(-10f);
             EndEpisode();

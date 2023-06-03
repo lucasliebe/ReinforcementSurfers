@@ -10,7 +10,7 @@ public class GroundController : MonoBehaviour
     public float speed = 1f;
     public GameObject spawnerPrefab;
     public GameObject trashcanPrefab;
-    private GameObject[] spawners;
+    private SpawnController[] spawners;
     private GameObject trashcan;
     private bool[] lanesOccupied;
     private int resetTimer = 0;
@@ -23,7 +23,7 @@ public class GroundController : MonoBehaviour
 
     public void Setup()
     {
-        spawners = new GameObject[lanes];
+        spawners = new SpawnController[lanes];
         lanesOccupied = new bool[lanes];
         for (int i=0; i<lanes; i++)
         {
@@ -31,7 +31,7 @@ public class GroundController : MonoBehaviour
             float offset = transform.localScale.z / 2;
             GameObject spawner = Instantiate(spawnerPrefab, transform.position + new Vector3(0+getLaneDistance()*factor, 1.5f, offset), Quaternion.identity, transform.parent);
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
-            spawners[i] = spawner;
+            spawners[i] = spawner.GetComponent<SpawnController>();
         }
         trashcan = Instantiate(trashcanPrefab, transform.position + new Vector3(0, 2.5f, -50), Quaternion.identity, transform.parent);
         trashcan.transform.localScale += new Vector3(transform.localScale.x, 0, 0);
@@ -42,7 +42,7 @@ public class GroundController : MonoBehaviour
         Time.timeScale = 0;
         foreach (var spawner in spawners)
         {
-            Destroy(spawner);
+            Destroy(spawner.gameObject);
         }
         Destroy(trashcan);
         Transform parentT = transform.parent;
@@ -60,13 +60,18 @@ public class GroundController : MonoBehaviour
         Random rnd = new Random();
         for (int i=0; i<lanes; i++)
         {
+            if (lanesOccupied[i] == false)
+            {
+                if (rnd.Next(100) < 1)
+                    spawners[i].triggerCoin();
+            }
             if(lanesOccupied.Where(c => c).Count() == lanes - 1)
             {
                 break;
             }
             if (rnd.Next(100) < 1)
             {
-                spawners[i].GetComponent<SpawnController>().trigger();
+                spawners[i].triggerObstacle();
                 lanesOccupied[i] = true;
                 resetTimer = 0;
             }

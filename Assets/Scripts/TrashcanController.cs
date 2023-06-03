@@ -18,7 +18,7 @@ public class TrashcanController : MonoBehaviour
     
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Obstacle")
+        if (collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "Coin")
         {
             Destroy(collision.gameObject);
         }

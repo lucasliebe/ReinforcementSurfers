@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &321550200316889854
+--- !u!1 &2198703141673911012
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 321550200316889850}
-  - component: {fileID: 321550200316889853}
-  - component: {fileID: 321550200316889852}
-  - component: {fileID: 321550200316889855}
-  - component: {fileID: -4377186470126319358}
+  - component: {fileID: 2057252617665657957}
+  - component: {fileID: 2726323864152619552}
+  - component: {fileID: 7145131614899491916}
+  - component: {fileID: 7523663425863968401}
+  - component: {fileID: 4093885343334205707}
+  - component: {fileID: 54786541960353307}
   m_Layer: 0
-  m_Name: SpawnArea
-  m_TagString: Untagged
+  m_Name: Coin
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &321550200316889850
+--- !u!4 &2057252617665657957
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321550200316889854}
+  m_GameObject: {fileID: 2198703141673911012}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 30}
-  m_LocalScale: {x: 0, y: 3, z: 0.1}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &321550200316889853
+--- !u!33 &2726323864152619552
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321550200316889854}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &321550200316889852
+  m_GameObject: {fileID: 2198703141673911012}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &7145131614899491916
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321550200316889854}
+  m_GameObject: {fileID: 2198703141673911012}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 892c1f058c63bb3f58199a706bffaf8a, type: 2}
+  - {fileID: 2100000, guid: f85a0b2a1721fa602be3af85100b2103, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,30 +86,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &321550200316889855
-BoxCollider:
+--- !u!135 &7523663425863968401
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321550200316889854}
+  m_GameObject: {fileID: 2198703141673911012}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-4377186470126319358
+--- !u!54 &4093885343334205707
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2198703141673911012}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!114 &54786541960353307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321550200316889854}
+  m_GameObject: {fileID: 2198703141673911012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5c08db9e7aa3689eac9f1bc84e4f508, type: 3}
+  m_Script: {fileID: 11500000, guid: 530b758e780f4f7779e27ac35b32a65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePrefab: {fileID: 9210236272576504367, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
-  coinPrefab: {fileID: 2198703141673911012, guid: a27b05d6a4c8e4ba79d619e15557a59e, type: 3}
+  speed: 1

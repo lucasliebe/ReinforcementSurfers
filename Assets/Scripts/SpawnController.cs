@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnController : MonoBehaviour
 {
     public GameObject obstaclePrefab;
+    public GameObject coinPrefab;
     private GameObject _trainingArea;
     private GroundController ground;
     
@@ -21,9 +22,15 @@ public class SpawnController : MonoBehaviour
         
     }
 
-    public void trigger()
+    public void triggerObstacle()
     {
         GameObject obstacle = Instantiate(obstaclePrefab, transform.position, Quaternion.identity, _trainingArea.transform);
-        obstacle.GetComponent<ObstacleController>().speed = ground.speed;
+        obstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
+    }
+    
+    public void triggerCoin()
+    {
+        GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity, _trainingArea.transform);
+        coin.GetComponent<ObstacleController>().SetSpeed(ground.speed);
     }
 }
