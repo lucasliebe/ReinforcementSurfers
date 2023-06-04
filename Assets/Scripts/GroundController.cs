@@ -8,6 +8,8 @@ public class GroundController : MonoBehaviour
 {
     public int lanes = 3;
     public float speed = 1f;
+    public float speedIncrement = 0.0f;
+    private float startSpeed;
     public GameObject spawnerPrefab;
     public GameObject trashcanPrefab;
     private SpawnController[] spawners;
@@ -23,6 +25,7 @@ public class GroundController : MonoBehaviour
 
     public void Setup()
     {
+        startSpeed = speed;
         spawners = new SpawnController[lanes];
         lanesOccupied = new bool[lanes];
         for (int i=0; i<lanes; i++)
@@ -52,6 +55,7 @@ public class GroundController : MonoBehaviour
             if(childT.CompareTag("Coin")) Destroy(childT.gameObject);
         }
         parentT.Find("Player").GetComponent<PlayerController>().Reset();
+        speed = startSpeed;
         Time.timeScale = 1;
     }
 
@@ -79,7 +83,7 @@ public class GroundController : MonoBehaviour
         }
         if (resetTimer > 60)
         {
-            speed += 0.01f;
+            speed += speedIncrement;
             lanesOccupied = new bool[lanes];
         }
         resetTimer += 1;
