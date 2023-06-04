@@ -79,6 +79,7 @@ public class GroundController : MonoBehaviour
         }
         if (resetTimer > 60)
         {
+            speed += 0.01f;
             lanesOccupied = new bool[lanes];
         }
         resetTimer += 1;
