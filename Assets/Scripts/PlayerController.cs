@@ -10,6 +10,12 @@ public class PlayerController : MonoBehaviour
     private int currentLane = 1;
     private bool isCollided = false;
     private int score = 0;
+    private Vector3[] targetPositions = new Vector3[] {
+            new Vector3(-3f, 1.1f, -6),
+            new Vector3(0, 1.1f, -6),
+            new Vector3(3f, 1.1f, -6)
+        };
+
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +52,16 @@ public class PlayerController : MonoBehaviour
         MoveLane();
     }
 
+    void FixedUpdate() 
+    {
+
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPositions[desiredLane], 0.15f);
+        if (Vector3.Distance(transform.localPosition, targetPositions[desiredLane]) < 0.1f)
+        {
+            transform.localPosition = targetPositions[desiredLane];
+        }
+    }
+
     public int GetCurrentLane()
     {
         return currentLane;
@@ -56,7 +72,6 @@ public class PlayerController : MonoBehaviour
         desiredLane = Math.Clamp(desiredLane, 0, groundController.lanes - 1);
         int change = desiredLane - currentLane;
         currentLane = desiredLane;
-        transform.localPosition += Vector3.right * (change * groundController.getLaneDistance());
     }
     
     public void SetDesiredLane(int lane)
