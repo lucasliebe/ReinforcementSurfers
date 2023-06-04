@@ -45,6 +45,11 @@ public class PlayerController : MonoBehaviour
         }
         MoveLane();
     }
+
+    public int GetCurrentLane()
+    {
+        return currentLane;
+    }
     
     public void MoveLane()
     {
