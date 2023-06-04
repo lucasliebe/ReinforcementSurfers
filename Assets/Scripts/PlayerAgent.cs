@@ -27,11 +27,11 @@ public class PlayerAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        for (int i = 0; i < (int)_groundController.lanes; i++)
-        {
-            sensor.AddObservation(_playerController.GetCurrentLane() == i ? 1.0f : 0.0f);
-        }
-        base.CollectObservations(sensor);
+        // for (int i = 0; i < (int)_groundController.lanes; i++)
+        // {
+        //     sensor.AddObservation(_playerController.GetCurrentLane() == i ? 1.0f : 0.0f);
+        // }
+        // base.CollectObservations(sensor);
     }
 
 
