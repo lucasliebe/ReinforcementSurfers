@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
         isCollided = false;
         desiredLane = 1;
         currentLane = 1;
+        score = 0;
         transform.localPosition = new Vector3(0, 1.1f, -6);
     }
 
@@ -35,6 +36,12 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             desiredLane++;
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // ReSharper disable twice Unity.PerformanceCriticalCodeInvocation
+            groundController.Cleanup();
+            groundController.Setup();
         }
         MoveLane();
     }
@@ -57,6 +64,11 @@ public class PlayerController : MonoBehaviour
         Tuple<bool, int> state = new Tuple<bool, int>(isCollided, score);
         score = 0;
         return state;
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 
     void OnCollisionEnter(Collision collision)

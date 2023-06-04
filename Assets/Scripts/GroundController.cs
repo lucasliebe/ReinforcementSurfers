@@ -49,6 +49,7 @@ public class GroundController : MonoBehaviour
         foreach (Transform childT in parentT)
         {
             if(childT.CompareTag("Obstacle")) Destroy(childT.gameObject);
+            if(childT.CompareTag("Coin")) Destroy(childT.gameObject);
         }
         parentT.Find("Player").GetComponent<PlayerController>().Reset();
         Time.timeScale = 1;
