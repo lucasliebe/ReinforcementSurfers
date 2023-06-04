@@ -10,11 +10,14 @@ public class PlayerController : MonoBehaviour
     private int currentLane = 1;
     private bool isCollided = false;
     private int score = 0;
-    private Vector3[] targetPositions = new Vector3[] {
-            new Vector3(-3f, 1.1f, -6),
-            new Vector3(0, 1.1f, -6),
-            new Vector3(3f, 1.1f, -6)
-        };
+
+    private bool isMoving = false;
+    private bool isJumping = false;
+    private bool isSliding = false;
+    private float[] movingTargetXs = {-3f, 0, 3f};
+    private float slidingTargetY = 0.5f;
+    private float jumpingTargetY = 4f;
+    private float defaultTargetY = 1.1f;
 
 
     // Start is called before the first frame update
@@ -32,16 +35,56 @@ public class PlayerController : MonoBehaviour
         transform.localPosition = new Vector3(0, 1.1f, -6);
     }
 
-    // Update is called once per frame
+    private Vector3 CalculateTargetPosition()
+    {
+        Vector3 targetPosition = transform.localPosition;
+
+        if (isMoving)
+        {
+            targetPosition.x = movingTargetXs[desiredLane];
+        }
+        if (isJumping)
+        {
+            targetPosition.y = jumpingTargetY;
+        }
+        if (isSliding)
+        {
+            targetPosition.y = slidingTargetY;
+        }
+        else if (!isJumping && !isSliding)
+        {
+            targetPosition.y = defaultTargetY;
+        }
+
+        return targetPosition;
+    }
+
+    private Vector3 CalculateTargetRotation()
+    {
+        return (isSliding) ? new Vector3(90, 0, 0) : new Vector3(0, 0, 0);
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             desiredLane--;
+            isMoving = true;
+            MoveLane();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             desiredLane++;
+            isMoving = true;
+            MoveLane();
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (transform.position.y <= 1.1f) isJumping = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (transform.rotation.x <= 0) isSliding = true;
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -49,31 +92,43 @@ public class PlayerController : MonoBehaviour
             groundController.Cleanup();
             groundController.Setup();
         }
-        MoveLane();
     }
 
     void FixedUpdate() 
     {
+        Vector3 targetPosition = CalculateTargetPosition();
+        Vector3 targetRotation = CalculateTargetRotation();
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPositions[desiredLane], 0.15f);
-        if (Vector3.Distance(transform.localPosition, targetPositions[desiredLane]) < 0.1f)
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.15f);
+        // "Snap" position and rotation to prevent endless linear interpolation
+        if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
         {
-            transform.localPosition = targetPositions[desiredLane];
+            transform.localPosition = targetPosition;
+            isMoving = false;
+            isSliding = false;
         }
-    }
-
-    public int GetCurrentLane()
-    {
-        return currentLane;
+        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.2f)
+        {
+            transform.localRotation = Quaternion.Euler(targetRotation);
+        }
+        if (jumpingTargetY - transform.localPosition.y < 0.1f)
+        {
+            isJumping = false;
+        }
     }
     
     public void MoveLane()
     {
         desiredLane = Math.Clamp(desiredLane, 0, groundController.lanes - 1);
-        int change = desiredLane - currentLane;
         currentLane = desiredLane;
     }
     
+    public int GetCurrentLane()
+    {
+        return currentLane;
+    }
+
     public void SetDesiredLane(int lane)
     {
         desiredLane = lane;
