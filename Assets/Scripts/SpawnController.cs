@@ -6,6 +6,8 @@ public class SpawnController : MonoBehaviour
 {
     public GameObject obstaclePrefab;
     public GameObject coinPrefab;
+    public GameObject jumpObstaclePrefab;
+    public GameObject slideObstaclePrefab;
     private GameObject _trainingArea;
     private GroundController ground;
     
@@ -32,5 +34,17 @@ public class SpawnController : MonoBehaviour
     {
         GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity, _trainingArea.transform);
         coin.GetComponent<ObstacleController>().SetSpeed(ground.speed);
+    }
+
+    public void triggerJumpObstacle()
+    {
+        GameObject jumpObstacle = Instantiate(jumpObstaclePrefab, transform.position - new Vector3(0f, 0.9f, 0f), Quaternion.identity, _trainingArea.transform);
+        jumpObstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
+    }
+
+    public void triggerSlideObstacle()
+    {
+        GameObject slideObstacle = Instantiate(slideObstaclePrefab, transform.position + new Vector3(0f, 0.95f, 0f), Quaternion.identity, _trainingArea.transform);
+        slideObstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
     }
 }

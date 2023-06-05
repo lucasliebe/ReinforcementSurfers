@@ -69,22 +69,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             desiredLane--;
-            isMoving = true;
             MoveLane();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             desiredLane++;
-            isMoving = true;
             MoveLane();
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (transform.position.y <= 1.1f) isJumping = true;
+            TriggerIsJumping();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (transform.rotation.x <= 0) isSliding = true;
+            TriggerIsSliding();
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -120,6 +118,7 @@ public class PlayerController : MonoBehaviour
     
     public void MoveLane()
     {
+        isMoving = true;
         desiredLane = Math.Clamp(desiredLane, 0, groundController.lanes - 1);
         currentLane = desiredLane;
     }
@@ -132,6 +131,16 @@ public class PlayerController : MonoBehaviour
     public void SetDesiredLane(int lane)
     {
         desiredLane = lane;
+    }
+
+    public void TriggerIsJumping()
+    {
+        if (transform.position.y <= 1.1f) isJumping = true;
+    }
+
+    public void TriggerIsSliding()
+    {
+        if (transform.position.y <= 1.1f) isSliding = true;
     }
 
     public Tuple<bool, int> GetState()
@@ -153,9 +162,13 @@ public class PlayerController : MonoBehaviour
             score++;
             Destroy(collision.gameObject);
         }
-        else if (!isCollided && collision.gameObject.CompareTag("Obstacle"))
+        else if (!isCollided && 
+            (collision.gameObject.CompareTag("Obstacle") || 
+            collision.gameObject.CompareTag("JumpObstacle") || 
+            collision.gameObject.CompareTag("SlideObstacle")))
         {
 			Debug.Log("Game Over!");
+            score = -1;
             isCollided = true;
             // UnityEditor.EditorApplication.isPlaying = false;
             // Application.Quit();

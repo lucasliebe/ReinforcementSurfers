@@ -47,5 +47,13 @@ public class PlayerAgent : Agent
         AddReward(0.01f);
         _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] -1));
         _playerController.MoveLane();
+        if (actions.DiscreteActions[1] == 0)
+        {
+            _playerController.TriggerIsJumping();
+        }
+        else if (actions.DiscreteActions[1] == 1)
+        {
+            _playerController.TriggerIsSliding();
+        }
     }
 }

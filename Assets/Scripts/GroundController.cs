@@ -53,6 +53,8 @@ public class GroundController : MonoBehaviour
         {
             if(childT.CompareTag("Obstacle")) Destroy(childT.gameObject);
             if(childT.CompareTag("Coin")) Destroy(childT.gameObject);
+            if(childT.CompareTag("JumpObstacle")) Destroy(childT.gameObject);
+            if(childT.CompareTag("SlideObstacle")) Destroy(childT.gameObject);
         }
         parentT.Find("Player").GetComponent<PlayerController>().Reset();
         speed = startSpeed;
@@ -68,7 +70,20 @@ public class GroundController : MonoBehaviour
             if (lanesOccupied[i] == false)
             {
                 if (rnd.Next(100) < 1)
+                {
                     spawners[i].triggerCoin();
+                    lanesOccupied[i] = true;
+                } 
+                else if (rnd.Next(100) < 1)
+                {
+                    spawners[i].triggerJumpObstacle();
+                    lanesOccupied[i] = true;
+                }
+                else if (rnd.Next(100) < 1)
+                {
+                    spawners[i].triggerSlideObstacle();
+                    lanesOccupied[i] = true;
+                }
             }
             if(lanesOccupied.Where(c => c).Count() == lanes - 1)
             {
