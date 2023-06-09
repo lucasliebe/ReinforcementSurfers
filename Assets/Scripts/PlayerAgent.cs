@@ -38,15 +38,18 @@ public class PlayerAgent : Agent
     public override void OnActionReceived(ActionBuffers actions)
     {
         Tuple<bool, int> state = _playerController.GetState();
-        AddReward(state.Item2 * 1f);
+        AddReward(state.Item2 * 1.5f);
         if (state.Item1) 
         {   
             AddReward(-10f);
             EndEpisode();
         }
         AddReward(0.01f);
-        _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] -1));
-        _playerController.MoveLane();
+        if (actions.DiscreteActions[0] != 1) {
+            AddReward(-0.03f);
+            _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] -1));
+            _playerController.MoveLane();
+        }
         if (actions.DiscreteActions[1] == 0)
         {
             _playerController.TriggerIsJumping();
