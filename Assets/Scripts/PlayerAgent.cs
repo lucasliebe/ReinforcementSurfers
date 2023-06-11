@@ -27,28 +27,28 @@ public class PlayerAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // for (int i = 0; i < (int)_groundController.lanes; i++)
-        // {
-        //     sensor.AddObservation(_playerController.GetCurrentLane() == i ? 1.0f : 0.0f);
-        // }
-        // base.CollectObservations(sensor);
+        for (int i = 0; i < (int)_groundController.lanes; i++)
+        {
+            sensor.AddObservation(_playerController.GetCurrentLane() == i ? 1.0f : 0.0f);
+        }
+        base.CollectObservations(sensor);
     }
 
 
     public override void OnActionReceived(ActionBuffers actions)
     {
         Tuple<bool, int> state = _playerController.GetState();
-        AddReward(state.Item2 * 1.5f);
-        if (state.Item1) 
-        {   
-            AddReward(-10f);
+        AddReward(state.Item2 * 0.5f);
+        if (state.Item1) {
+            AddReward(-1f);
             EndEpisode();
         }
-        AddReward(0.01f);
         if (actions.DiscreteActions[0] != 1) {
-            AddReward(-0.03f);
-            _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] -1));
+            AddReward(-0.004f);
+            _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] - 1));
             _playerController.MoveLane();
+        } else {
+            AddReward(0.001f);
         }
         if (actions.DiscreteActions[1] == 0)
         {
