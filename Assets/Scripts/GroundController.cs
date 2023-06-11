@@ -40,7 +40,7 @@ public class GroundController : MonoBehaviour
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
             spawners[i] = spawner.GetComponent<SpawnController>();
         }
-        trashcan = Instantiate(trashcanPrefab, transform.position + new Vector3(0, 2.5f, -50), Quaternion.identity, transform.parent);
+        trashcan = Instantiate(trashcanPrefab, transform.position + new Vector3(0, 2.5f, -40), Quaternion.identity, transform.parent);
         trashcan.transform.localScale += new Vector3(transform.localScale.x, 0, 0);
     }
 
