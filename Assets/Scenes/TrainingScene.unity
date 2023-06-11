@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numTrainingAreas: 30
   numAreasPerRow: 10
-  areaOffsetX: 10
+  areaOffsetX: 15
   areaOffsetY: 7
   trainingAreaPrefab: {fileID: 4387001845696453424, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
 --- !u!4 &375769296

@@ -118,8 +118,8 @@ public class PlayerController : MonoBehaviour
     public void MoveLane()
     {
         isMoving = true;
-        if (desiredLane < 0 || desiredLane > groundController.lanes - 1)
-            isCollided = true;
+        // if (desiredLane < 0 || desiredLane > groundController.lanes - 1)
+        //    isCollided = true;
         desiredLane = Math.Clamp(desiredLane, 0, groundController.lanes - 1);
         currentLane = desiredLane;
     }

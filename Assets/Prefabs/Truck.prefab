@@ -504,6 +504,7 @@ GameObject:
   - component: {fileID: 3140380983594512566}
   - component: {fileID: 876914270164091684}
   - component: {fileID: -2177553198112061106}
+  - component: {fileID: 1504948193383509930}
   m_Layer: 0
   m_Name: Truck
   m_TagString: Obstacle
@@ -622,3 +623,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1504948193383509930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9210236272576504367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Shape:
+    m_ScanResultsByLOD:
+    - LocalPoints:
+      - {x: 0, y: -0.000000036458175, z: 0.000000007450581}
+    m_LocalPoints:
+    - {x: 0, y: -0.000000036458175, z: 0.000000007450581}
+    m_WorldPoints: []
+    m_MergeDisconnected: 0
+    m_Flatten: 0
+    m_MaxLOD: 0
+    m_SelectedLOD: 0
+    m_ScanLOD: 0
+    m_GizmoLOD: 0
+    m_Projection: 0
+    m_PointCount: 1
+    m_DrawGrid: 0

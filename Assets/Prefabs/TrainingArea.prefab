@@ -17,8 +17,8 @@ GameObject:
   - component: {fileID: 4387001844303986643}
   - component: {fileID: 4387001844303986640}
   - component: {fileID: 4387001844303986641}
-  - component: {fileID: 4387001844303986670}
-  - component: {fileID: 4387001844303986668}
+  - component: {fileID: 8454697730754007428}
+  - component: {fileID: 2930067681524104988}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
-  TakeActionsBetweenDecisions: 1
---- !u!114 &4387001844303986670
+  TakeActionsBetweenDecisions: 0
+--- !u!114 &8454697730754007428
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,30 +203,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4387001844303986659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f8abecd5902d09449e947799d9330a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor1
-  m_DetectableTags:
-  - Obstacle
-  - Wall
-  - Coin
-  - JumpObstacle
-  - SlideObstacle
-  m_RaysPerDirection: 4
-  m_MaxRayDegrees: 82.1
-  m_SphereCastRadius: 0.66
-  m_RayLength: 13
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967291
-  m_ObservationStacks: 1
-  m_AlternatingRayOrder: 0
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 0.22
-  m_EndVerticalOffset: 0.08
---- !u!114 &4387001844303986668
+--- !u!114 &2930067681524104988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -235,29 +215,115 @@ MonoBehaviour:
   m_GameObject: {fileID: 4387001844303986659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor2
-  m_DetectableTags:
-  - Obstacle
-  - Wall
-  - Coin
-  - JumpObstacle
-  - SlideObstacle
-  m_RaysPerDirection: 4
-  m_MaxRayDegrees: 11.5
-  m_SphereCastRadius: 0.47
-  m_RayLength: 24
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967291
+  m_ObservationShape: 5 channels x 5 width x 22 height
+  m_SensorName: GridSensor
   m_ObservationStacks: 1
-  m_AlternatingRayOrder: 0
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 3.59
-  m_EndVerticalOffset: -0.6
+  m_CompressionType: 1
+  m_ObservationType: 0
+  m_ChannelLabels: []
+  m_Debug_CreateSensorOnAwake: 0
+  m_Debug_CreateSensorOnValidate: 1
+  m_Debug_FrameInterval: 1
+  m_Debug_DrawGridBuffer: 0
+  m_Debug_GridBufferDrawer:
+    Context: {fileID: 0}
+    Editor: {fileID: 0}
+    GridSizeRatio: 0
+    IsEnabled: 0
+    IsStandby: 0
+  m_GridShape:
+    NumChannels: 5
+    Width: 5
+    Height: 22
+  m_ClearCacheOnReset: 0
+  m_ColliderBufferSize: 64
+  m_TmpObjectToAdd: {fileID: 0}
+  m_GameObjectSettingsList:
+  - Tag: Wall
+    Enabled: 1
+    DetectionType: 1
+    Modifier: 0
+    Detectable: {fileID: 1560526239240861018}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.72006714, g: 0.42392784, b: 0.0027362371, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: Coin
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: -7373046747246466193, guid: a27b05d6a4c8e4ba79d619e15557a59e, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.17046371, g: 0.364068, b: 0.91204435, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: Obstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.84647894, g: 0.35696208, b: 0.44267058, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: JumpObstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 2401875008471486636, guid: 9ba45ea5c50832f4299d1adfd13fd146, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.6143836, g: 0.10984991, b: 0.08872233, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: SlideObstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: -2153071789201093107, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.14157449, g: 0.79350877, b: 0.48927182, a: 1}
+    m_DetectorSpaceType: 0
+  m_RotationType: 0
+  m_DetectionBounds:
+    m_Center: {x: 0, y: 1, z: 20}
+    m_Extent: {x: 5, y: 2, z: 22}
+  m_EditorBounds:
+    m_Center: {x: 0, y: 1, z: 20}
+    m_Extent: {x: 5, y: 2, z: 22.5}
+  m_CellSize: 2
+  m_NumCells: {x: 5, y: 1, z: 22}
+  m_DetectionSize: {x: 10, y: 4, z: 44}
+  m_BoundsSize: {x: 10, y: 4, z: 45}
+  m_Offset: {x: 0, y: 1, z: 20}
 --- !u!1 &4387001845696453424
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +369,7 @@ GameObject:
   - component: {fileID: 4387001845742149628}
   - component: {fileID: 4387001845742149629}
   - component: {fileID: 4387001845742149626}
+  - component: {fileID: 1560526239240861018}
   m_Layer: 0
   m_Name: Left Wall
   m_TagString: Wall
@@ -388,6 +455,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1560526239240861018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387001845742149624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Shape:
+    m_ScanResultsByLOD: []
+    m_LocalPoints: []
+    m_WorldPoints: []
+    m_MergeDisconnected: 0
+    m_Flatten: 0
+    m_MaxLOD: 0
+    m_SelectedLOD: 0
+    m_ScanLOD: 0
+    m_GizmoLOD: 0
+    m_Projection: 0
+    m_PointCount: 0
+    m_DrawGrid: 0
 --- !u!1 &4387001845784093859
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +609,7 @@ GameObject:
   - component: {fileID: 4387001845902228124}
   - component: {fileID: 4387001845902228125}
   - component: {fileID: 4387001845902228122}
+  - component: {fileID: 876901541579980931}
   m_Layer: 0
   m_Name: Right Wall
   m_TagString: Wall
@@ -602,3 +695,28 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &876901541579980931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387001845902228120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Shape:
+    m_ScanResultsByLOD: []
+    m_LocalPoints: []
+    m_WorldPoints: []
+    m_MergeDisconnected: 0
+    m_Flatten: 0
+    m_MaxLOD: 0
+    m_SelectedLOD: 0
+    m_ScanLOD: 0
+    m_GizmoLOD: 0
+    m_Projection: 0
+    m_PointCount: 0
+    m_DrawGrid: 0
