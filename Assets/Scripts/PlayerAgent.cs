@@ -25,6 +25,29 @@ public class PlayerAgent : Agent
         _groundController.Setup();
     }
 
+    // public override void Heuristic(in ActionBuffers actionsOut)
+    // {
+    //     ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+    //     discreteActions[0] = 1;
+    //     discreteActions[1] = 2;
+    //     if (Input.GetKey(KeyCode.LeftArrow))
+    //     {
+    //         discreteActions[0] = 0;
+    //     }
+    //     if (Input.GetKey(KeyCode.RightArrow))
+    //     {
+    //         discreteActions[0] = 2;
+    //     }
+    //     if (Input.GetKey(KeyCode.UpArrow))
+    //     {
+    //         discreteActions[1] = 0;
+    //     }
+    //     if (Input.GetKey(KeyCode.DownArrow))
+    //     {
+    //         discreteActions[1] = 1;
+    //     }
+    // }
+
     public override void CollectObservations(VectorSensor sensor)
     {
         for (int i = 0; i < (int)_groundController.lanes; i++)
