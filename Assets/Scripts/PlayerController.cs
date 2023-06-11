@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     private float jumpingTargetY = 4f;
     private float defaultTargetY = 1.1f;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -142,7 +141,11 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerIsSliding()
     {
-        if (transform.position.y <= 1.1f) isSliding = true;
+        if (transform.rotation.x <= 0) 
+        {
+            isSliding = true;
+            isJumping = false;
+        }
     }
 
     public Tuple<bool, int> GetState()

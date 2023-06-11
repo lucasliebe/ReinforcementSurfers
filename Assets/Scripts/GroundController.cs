@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 using System.Linq;
+using System;
 
 public class GroundController : MonoBehaviour
 {
@@ -14,8 +15,10 @@ public class GroundController : MonoBehaviour
     public GameObject trashcanPrefab;
     private SpawnController[] spawners;
     private GameObject trashcan;
-    private bool[] lanesOccupied;
+    private int[] lanesOccupied;
     private int resetTimer = 0;
+    private bool canSpawn = true;
+    private Random rnd = new Random();
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +30,8 @@ public class GroundController : MonoBehaviour
     {
         startSpeed = speed;
         spawners = new SpawnController[lanes];
-        lanesOccupied = new bool[lanes];
+        lanesOccupied = new int[lanes];
+        Array.Fill(lanesOccupied, -1);
         for (int i=0; i<lanes; i++)
         {
             int factor = i - (lanes / 2);
@@ -61,47 +65,71 @@ public class GroundController : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void SpawnObstacles()
     {
-        Random rnd = new Random();
+        int spawnedObstacles = 0;
+        for (int i = 0; i < lanes; i++)
+        {
+            if (lanesOccupied[i] == 0)
+            {
+                spawnedObstacles++;
+            }
+        }
+        
         for (int i=0; i<lanes; i++)
         {
-            if (lanesOccupied[i] == false)
+            if (rnd.Next(100) > 25) continue;
+            if (lanesOccupied[i] != -1) continue;
+
+            int obstacleType = rnd.Next(4);
+            switch (obstacleType)
             {
-                if (rnd.Next(100) < 1)
-                {
-                    spawners[i].triggerCoin();
-                    lanesOccupied[i] = true;
-                } 
-                else if (rnd.Next(100) < 1)
-                {
+                case 0:
+                    if (spawnedObstacles >= lanes - 1) continue;
+                    spawners[i].triggerObstacle();
+                    lanesOccupied[i] = 0;
+                    spawnedObstacles++;
+                    break;
+                case 1:
                     spawners[i].triggerJumpObstacle();
-                    lanesOccupied[i] = true;
-                }
-                else if (rnd.Next(100) < 1)
-                {
+                    lanesOccupied[i] = 1;
+                    break;
+                case 2:
                     spawners[i].triggerSlideObstacle();
-                    lanesOccupied[i] = true;
-                }
+                    lanesOccupied[i] = 2;
+                    break;
+                case 3:
+                    spawners[i].triggerCoin();
+                    lanesOccupied[i] = 3;
+                    break;
             }
-            if(lanesOccupied.Where(c => c).Count() == lanes - 1)
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (canSpawn)
+        {
+            resetTimer += 1;
+            SpawnObstacles();
+            if (resetTimer > 5)
             {
-                break;
-            }
-            if (rnd.Next(100) < 1)
-            {
-                spawners[i].triggerObstacle();
-                lanesOccupied[i] = true;
+                canSpawn = false;
                 resetTimer = 0;
             }
-        }
-        if (resetTimer > 60)
+        } 
+        else
         {
-            speed += speedIncrement;
-            lanesOccupied = new bool[lanes];
+            resetTimer += 1;
+            if (resetTimer > 35)
+            {
+                canSpawn = true;
+                resetTimer = 0;
+                lanesOccupied = new int[lanes];
+                Array.Fill(lanesOccupied, -1);
+            }
         }
-        resetTimer += 1;
+        
     }
     
     public float getLaneDistance()
