@@ -3,10 +3,10 @@ behaviors:
   My Behavior:
     trainer_type: sac
     hyperparameters:
-      batch_size: 1024
-      buffer_size: 10240
+      batch_size: 512
+      buffer_size: 50000
       learning_rate: 0.0005
-      learning_rate_schedule: linear
+      learning_rate_schedule: constant
       buffer_init_steps: 1000
       init_entcoef: 0.5
       save_replay_buffer: true
@@ -38,7 +38,7 @@ behaviors:
     max_steps: 10000000
     time_horizon: 64
     summary_freq: 50000
-    threaded: false
+    threaded: true
     self_play: null
     behavioral_cloning: null
 env_settings:
