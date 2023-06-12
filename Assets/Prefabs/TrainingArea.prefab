@@ -218,10 +218,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 5 channels x 5 width x 10 height
+  m_ObservationShape: 5 channels x 5 width x 20 height
   m_SensorName: GridSensor
   m_ObservationStacks: 1
-  m_CompressionType: 0
+  m_CompressionType: 1
   m_ObservationType: 0
   m_ChannelLabels: []
   m_Debug_CreateSensorOnAwake: 0
@@ -237,8 +237,8 @@ MonoBehaviour:
   m_GridShape:
     NumChannels: 5
     Width: 5
-    Height: 10
-  m_ClearCacheOnReset: 0
+    Height: 20
+  m_ClearCacheOnReset: 1
   m_ColliderBufferSize: 64
   m_TmpObjectToAdd: {fileID: 0}
   m_GameObjectSettingsList:
@@ -314,16 +314,16 @@ MonoBehaviour:
     m_DetectorSpaceType: 0
   m_RotationType: 0
   m_DetectionBounds:
-    m_Center: {x: 0, y: 1, z: 10}
-    m_Extent: {x: 5, y: 2, z: 10}
+    m_Center: {x: 0, y: 1, z: 19}
+    m_Extent: {x: 5, y: 2, z: 20}
   m_EditorBounds:
-    m_Center: {x: 0, y: 1, z: 10}
-    m_Extent: {x: 5, y: 2, z: 10}
+    m_Center: {x: 0, y: 1, z: 19}
+    m_Extent: {x: 5, y: 2, z: 20}
   m_CellSize: 2
-  m_NumCells: {x: 5, y: 1, z: 10}
-  m_DetectionSize: {x: 10, y: 4, z: 20}
-  m_BoundsSize: {x: 10, y: 4, z: 20}
-  m_Offset: {x: 0, y: 1, z: 10}
+  m_NumCells: {x: 5, y: 1, z: 20}
+  m_DetectionSize: {x: 10, y: 4, z: 40}
+  m_BoundsSize: {x: 10, y: 4, z: 40}
+  m_Offset: {x: 0, y: 1, z: 19}
 --- !u!1 &4387001845696453424
 GameObject:
   m_ObjectHideFlags: 0

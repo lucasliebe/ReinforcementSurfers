@@ -46,7 +46,7 @@ public class GroundController : MonoBehaviour
 
     public void Cleanup()
     {
-        Time.timeScale = 0;
+        // Time.timeScale = 0;
         foreach (var spawner in spawners)
         {
             Destroy(spawner.gameObject);
@@ -62,7 +62,7 @@ public class GroundController : MonoBehaviour
         }
         parentT.Find("Player").GetComponent<PlayerController>().Reset();
         speed = startSpeed;
-        Time.timeScale = 1;
+        // Time.timeScale = 1;
     }
 
     void SpawnObstacles()
@@ -121,7 +121,7 @@ public class GroundController : MonoBehaviour
         else
         {
             resetTimer += 1;
-            if (resetTimer > 35)
+            if (resetTimer > 40)
             {
                 canSpawn = true;
                 resetTimer = 0;

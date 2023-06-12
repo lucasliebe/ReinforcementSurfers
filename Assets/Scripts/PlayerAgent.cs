@@ -67,7 +67,7 @@ public class PlayerAgent : Agent
             EndEpisode();
         }
         if (actions.DiscreteActions[0] != 1) {
-            AddReward(-0.002f);
+            AddReward(0f);
             _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] - 1));
             _playerController.MoveLane();
         } else {
