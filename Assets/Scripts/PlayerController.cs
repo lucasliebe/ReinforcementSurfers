@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
         Vector3 targetRotation = CalculateTargetRotation();
 
         transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.15f);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
         // "Snap" position and rotation to prevent endless linear interpolation
         if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
         {
