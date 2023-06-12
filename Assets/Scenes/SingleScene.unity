@@ -308,6 +308,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2930067681524104988, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
+      propertyPath: m_ClearCacheOnReset
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4387001844303986640, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
       propertyPath: m_Model
       value: 
