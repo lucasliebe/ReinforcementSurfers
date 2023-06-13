@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public TMP_Text scoreText;
     private GroundController groundController;
     private int desiredLane = 1; // 0 = left, higher = right
     private int currentLane = 1;
     private bool isCollided = false;
     private int score = 0;
+    private float total_score = 0f;
 
     private bool isMoving = false;
     private bool isJumping = false;
@@ -31,6 +34,7 @@ public class PlayerController : MonoBehaviour
         desiredLane = 1;
         currentLane = 1;
         score = 0;
+        total_score = 0;
         transform.localPosition = new Vector3(0, 1.1f, -6);
     }
 
@@ -65,9 +69,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        scoreText.text = "Score: " + MathF.Round(total_score*1000f)/1000f;
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            desiredLane--;
+            desiredLane--; 
             MoveLane();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -113,6 +118,7 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = false;
         }
+        total_score += 0.0005f;
     }
     
     public void MoveLane()
@@ -165,6 +171,7 @@ public class PlayerController : MonoBehaviour
         if (!isCollided && collision.gameObject.CompareTag("Coin"))
         {
             score++;
+            total_score += 0.5f;
             Destroy(collision.gameObject);
         }
         else if (!isCollided && 
@@ -172,7 +179,7 @@ public class PlayerController : MonoBehaviour
             collision.gameObject.CompareTag("JumpObstacle") || 
             collision.gameObject.CompareTag("SlideObstacle")))
         {
-			Debug.Log("Game Over!");
+			Debug.Log("Game Over! Total Score: " + MathF.Round(total_score*1000f)/1000f);
             score = -1;
             isCollided = true;
             // UnityEditor.EditorApplication.isPlaying = false;
