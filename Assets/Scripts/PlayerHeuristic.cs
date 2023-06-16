@@ -95,8 +95,8 @@ public class PlayerHeuristic : MonoBehaviour
     {
         int lane = -1;
         if (obj.transform.position.x == spawnerPositionsX[0]) lane = 0;
-        if (obj.transform.position.x == spawnerPositionsX[1]) lane = 1;
-        if (obj.transform.position.x == spawnerPositionsX[2]) lane = 2;
+        else if (obj.transform.position.x == spawnerPositionsX[1]) lane = 1;
+        else if (obj.transform.position.x == spawnerPositionsX[2]) lane = 2;
 
         return lane;
     }
