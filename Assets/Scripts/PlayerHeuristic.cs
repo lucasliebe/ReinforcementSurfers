@@ -88,7 +88,17 @@ public class PlayerHeuristic : MonoBehaviour
 
     private float GetDistanceToObject(GameObject obj)
     {
-        return obj == null ? 1000.0f : obj.transform.position.z + 6.0f;
+        return obj == null ? 1000.0f : Mathf.Abs(obj.transform.position.z) - 6.0f;
+    }
+
+    private int GetObjectsLane(GameObject obj)
+    {
+        int lane = -1;
+        if (obj.transform.position.x == spawnerPositionsX[0]) lane = 0;
+        if (obj.transform.position.x == spawnerPositionsX[1]) lane = 1;
+        if (obj.transform.position.x == spawnerPositionsX[2]) lane = 2;
+
+        return lane;
     }
 
     private GameObject GetClosestObject(GameObject object0, GameObject object1, GameObject object2)
@@ -116,15 +126,9 @@ public class PlayerHeuristic : MonoBehaviour
 
     }
 
-    private void MoveLeft()
+    private void MoveToLane(int lane)
     {
-        _playerController.SetDesiredLane(_playerController.GetCurrentLane() - 1);
-        _playerController.MoveLane();
-    }
-
-    private void MoveRight()
-    {
-        _playerController.SetDesiredLane(_playerController.GetCurrentLane() + 1);
+        _playerController.SetDesiredLane(lane);
         _playerController.MoveLane();
     }
 
@@ -138,15 +142,6 @@ public class PlayerHeuristic : MonoBehaviour
         _playerController.TriggerIsSliding();
     }
 
-    private int GetObjectsLane(GameObject obj)
-    {
-        int lane = -1;
-        if (obj.transform.position.x == spawnerPositionsX[0]) lane = 0;
-        if (obj.transform.position.x == spawnerPositionsX[1]) lane = 1;
-        if (obj.transform.position.x == spawnerPositionsX[2]) lane = 2;
-
-        return lane;
-    }
 
     void FixedUpdate()
     {
@@ -164,7 +159,31 @@ public class PlayerHeuristic : MonoBehaviour
             closestObjectOnLane2
         );
 
-        // Dodge obstacles
+        // Get second closest object overall
+        GameObject secondClosestObject = GetClosestObject(
+            closestObjectOnLane0 == closestObject ? null : closestObjectOnLane0,
+            closestObjectOnLane1 == closestObject ? null : closestObjectOnLane1,
+            closestObjectOnLane2 == closestObject ? null : closestObjectOnLane2
+        );
+
+        // Determine lanes of closest and second closest object and move to the third lane
+        if (closestObject != null && secondClosestObject != null)
+        {
+            int closestObjectLane = GetObjectsLane(closestObject);
+            int secondClosestObjectLane = GetObjectsLane(secondClosestObject);
+
+            List<int> lanes = new List<int> {0, 1, 2};
+            lanes.Remove(closestObjectLane);
+            lanes.Remove(secondClosestObjectLane);
+
+            int thirdLane = lanes[0];
+            MoveToLane(thirdLane);
+
+            // TODO:
+            // Jump and slide if necessary (Need distance to object --> function already exists)
+            // Collect Coins
+            // Move lane after objects have passed
+        }
         
         
     }
