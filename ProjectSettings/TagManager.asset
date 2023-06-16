@@ -9,6 +9,7 @@ TagManager:
   - Coin
   - JumpObstacle
   - SlideObstacle
+  - SpawnArea
   layers:
   - Default
   - TransparentFX
