@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPosition = CalculateTargetPosition();
         Vector3 targetRotation = CalculateTargetRotation();
 
-        //transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
         // "Snap" position and rotation to prevent endless linear interpolation
         if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
     {
         if (transform.position.y <= 1.1f)
         {
-            rb.AddForce(Physics.gravity * -3.5f, ForceMode.VelocityChange);
+            rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
         }
     }
 
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
     {
         if (transform.rotation.x <= 0) 
         {
-            rb.AddForce(Physics.gravity * 3f, ForceMode.VelocityChange);
+            rb.AddForce(Physics.gravity * 2f, ForceMode.Impulse);
             isSliding = true;
         }
     }
