@@ -15,17 +15,15 @@ public class PlayerController : MonoBehaviour
     private float total_score = 0f;
 
     private bool isMoving = false;
-    private bool isJumping = false;
     private bool isSliding = false;
     private float[] movingTargetXs = {-3f, 0, 3f};
-    private float slidingTargetY = 0.5f;
-    private float jumpingTargetY = 4f;
-    private float defaultTargetY = 1.1f;
+    private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
         groundController = GameObject.Find("Ground").GetComponent<GroundController>();
+        rb = GetComponent<Rigidbody>();
     }
 
     public void Reset()
@@ -45,18 +43,6 @@ public class PlayerController : MonoBehaviour
         if (isMoving)
         {
             targetPosition.x = movingTargetXs[desiredLane];
-        }
-        if (isJumping)
-        {
-            targetPosition.y = jumpingTargetY;
-        }
-        if (isSliding)
-        {
-            targetPosition.y = slidingTargetY;
-        }
-        else if (!isJumping && !isSliding)
-        {
-            targetPosition.y = defaultTargetY;
         }
 
         return targetPosition;
@@ -101,23 +87,20 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPosition = CalculateTargetPosition();
         Vector3 targetRotation = CalculateTargetRotation();
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        //transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
         // "Snap" position and rotation to prevent endless linear interpolation
         if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
         {
-            transform.localPosition = targetPosition;
+            //transform.localPosition = targetPosition;
             isMoving = false;
-            isSliding = false;
         }
-        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.2f)
+        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.1f)
         {
             transform.localRotation = Quaternion.Euler(targetRotation);
+            isSliding = false;
         }
-        if (jumpingTargetY - transform.localPosition.y < 0.1f)
-        {
-            isJumping = false;
-        }
+        rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
         total_score += 0.0005f;
     }
     
@@ -142,15 +125,18 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerIsJumping()
     {
-        if (transform.position.y <= 1.1f) isJumping = true;
+        if (transform.position.y <= 1.1f)
+        {
+            rb.AddForce(Physics.gravity * -3.5f, ForceMode.VelocityChange);
+        }
     }
 
     public void TriggerIsSliding()
     {
         if (transform.rotation.x <= 0) 
         {
+            rb.AddForce(Physics.gravity * 3f, ForceMode.VelocityChange);
             isSliding = true;
-            isJumping = false;
         }
     }
 
