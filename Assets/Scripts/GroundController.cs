@@ -77,7 +77,6 @@ public class GroundController : MonoBehaviour
 
     private void SpawnPrefabObstacles(Dictionary<int, Dictionary<int, int>> obstacles)
     {
-        Debug.Log(RoundToTen(prefabSpawnTimer));
         try 
         {
             var obstaclesOnLane = obstacles[RoundToTen(prefabSpawnTimer)];
@@ -97,7 +96,6 @@ public class GroundController : MonoBehaviour
                         spawners[obstacle.Key].triggerSlideObstacle();
                         break;
                     case 4:
-                        Debug.Log("Coin");
                         spawners[obstacle.Key].triggerCoin();
                         break;
                 }
