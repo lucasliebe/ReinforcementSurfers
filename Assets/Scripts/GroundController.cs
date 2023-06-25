@@ -112,7 +112,7 @@ public class GroundController : MonoBehaviour
         {
             resetTimer += 1;
             SpawnObstacles();
-            if (resetTimer > 5)
+            if (resetTimer > (int)(2.5f / speed))
             {
                 canSpawn = false;
                 resetTimer = 0;
@@ -121,7 +121,7 @@ public class GroundController : MonoBehaviour
         else
         {
             resetTimer += 1;
-            if (resetTimer > 40)
+            if (resetTimer > (int)(20 / speed))
             {
                 canSpawn = true;
                 resetTimer = 0;
