@@ -17,8 +17,12 @@ public class GroundController : MonoBehaviour
     private GameObject trashcan;
     private int[] lanesOccupied;
     private int resetTimer = 0;
+    private int prefabSpawnTimer = 0;
+    private int randomSpawnTimer = 0;
     private bool canSpawn = true;
     private Random rnd = new Random();
+    ObstacleTimePrefabs obstacleTimePrefabs = new ObstacleTimePrefabs();
+    private int decision = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +69,41 @@ public class GroundController : MonoBehaviour
         // Time.timeScale = 1;
     }
 
-    void SpawnObstacles()
+    private int RoundToTen(int number)
+    {
+        return (int)(Math.Round(number / 10.0) * 10);
+    }
+
+    private void SpawnPrefabObstacles(Dictionary<int, Dictionary<int, int>> obstacles)
+    {
+        try 
+        {
+            var obstaclesOnLane = obstacles[RoundToTen(prefabSpawnTimer)];
+            foreach (var obstacle in obstaclesOnLane)
+            {
+                switch (obstacle.Value)
+                {
+                    case 0: 
+                        break;
+                    case 1:
+                        spawners[obstacle.Key].triggerObstacle();
+                        break;
+                    case 2:
+                        spawners[obstacle.Key].triggerJumpObstacle();
+                        break;
+                    case 3:
+                        spawners[obstacle.Key].triggerSlideObstacle();
+                        break;
+                }
+            }
+        }
+        catch (Exception) {}
+
+        prefabSpawnTimer += 10;
+
+    }
+
+    private void SpawnObstacles()
     {
         int spawnedObstacles = 0;
         for (int i = 0; i < lanes; i++)
@@ -108,25 +146,41 @@ public class GroundController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (canSpawn)
+        if (decision == 0)
         {
             resetTimer += 1;
-            SpawnObstacles();
-            if (resetTimer > (int)(2.5f / speed))
+            if (resetTimer > (int)(10 / speed))
             {
-                canSpawn = false;
-                resetTimer = 0;
-            }
-        } 
-        else
-        {
-            resetTimer += 1;
-            if (resetTimer > (int)(20 / speed))
-            {
-                canSpawn = true;
+                decision = rnd.Next(1, 3);
                 resetTimer = 0;
                 lanesOccupied = new int[lanes];
                 Array.Fill(lanesOccupied, -1);
+            }
+        }
+        
+        // Spawn random prefab obstacles
+        if (decision == 1)
+        {
+            Debug.Log("Spawn prefab obstacles");
+            int randomIndex = rnd.Next(obstacleTimePrefabs.obstacles.Count);
+            var randomObstacle = obstacleTimePrefabs.obstacles[randomIndex];
+            SpawnPrefabObstacles(randomObstacle.Item2);
+            if (prefabSpawnTimer >= randomObstacle.Item1) 
+            {
+                prefabSpawnTimer = 0;
+                decision = 0;
+            }
+        }
+        // Spawn row of random obstacles
+        else if (decision == 2)
+        {
+            Debug.Log("Spawn random obstacles");
+            randomSpawnTimer += 1;
+            SpawnObstacles();
+            if (randomSpawnTimer > (int)(2.5f / speed))
+            {
+                randomSpawnTimer = 0;
+                decision = 0;
             }
         }
         
