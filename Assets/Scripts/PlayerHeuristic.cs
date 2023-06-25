@@ -148,9 +148,9 @@ public class PlayerHeuristic : MonoBehaviour
     private bool BlockingObstacleExistsOnLane(int lane)
     {
         var obstacles = new List<GameObject>();
-        obstacles.AddRange(GameObject.FindGameObjectsWithTag("Obstacle"));
-        obstacles.AddRange(GameObject.FindGameObjectsWithTag("JumpObstacle"));
-        obstacles.AddRange(GameObject.FindGameObjectsWithTag("SlideObstacle"));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("Obstacle", lane));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("JumpObstacle", lane));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("SlideObstacle", lane));
 
         foreach (var obj in obstacles)
         {
