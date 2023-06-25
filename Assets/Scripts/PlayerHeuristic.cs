@@ -270,13 +270,10 @@ public class PlayerHeuristic : MonoBehaviour
             int thirdLane = lanes[0];
 
             // Prefer a lane to dodge to that has a jump or slide obstacle (only if its still far enough away)
-            if (thirdLane == GetActualPosition()) 
+            if ((secondClosestObject.tag == "SlideObstacle" || secondClosestObject.tag == "JumpObstacle")
+                && GetDistanceToObject(secondClosestObject) >= 4.5f)
             {
-                if ((secondClosestObject.tag == "SlideObstacle" || secondClosestObject.tag == "JumpObstacle")
-                    && GetDistanceToObject(secondClosestObject) >= 4.5f)
-                {
-                    thirdLane = secondClosestObjectLane;
-                }
+                thirdLane = secondClosestObjectLane;
             }
 
             if (MoveToLane(thirdLane)) return;
