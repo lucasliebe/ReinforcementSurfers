@@ -10,8 +10,6 @@ public class PlayerHeuristic : MonoBehaviour
 
     private GameObject closestObject;
     private GameObject secondClosestObject;
-    private bool idle = false;
-
     private GameObject player;
 
     private void InitializeSpawnerPositionsX()
@@ -39,6 +37,13 @@ public class PlayerHeuristic : MonoBehaviour
         player = GameObject.Find("Player");
     }
 
+    private int GetActualPosition()
+    {
+        if (player.transform.position.x <= -1.5f) return 0;
+        if (player.transform.position.x >= 1.5f) return 2;
+        return 1;
+    }
+
     private List<GameObject> GetGameObjectsWithTagOnLane(string tag, int lane)
     {
         var objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
@@ -47,7 +52,7 @@ public class PlayerHeuristic : MonoBehaviour
         foreach (var obj in objectsWithTag)
         {
             // Object is behind player
-            if (obj.transform.position.z < -6.0f) continue;
+            if (obj.transform.position.z < player.transform.position.z) continue;
 
             if (obj.transform.position.x == spawnerPositionsX[lane])
             {
@@ -91,16 +96,15 @@ public class PlayerHeuristic : MonoBehaviour
         }
 
         return closestObject;
-        
     }
 
     private float GetDistanceToObject(GameObject obj)
     {
         return obj == null 
             ? 1000.0f 
-            : (obj.transform.position.z >= -6.0f) 
-                ? obj.transform.position.z + 6.0f
-                : 1000.0f;
+            : (obj.transform.position.z >= player.transform.position.z) 
+                ? obj.transform.position.z - player.transform.position.z
+                : 1000.0f; // Object is behind player
     }
 
     private int GetObjectsLane(GameObject obj)
@@ -138,16 +142,19 @@ public class PlayerHeuristic : MonoBehaviour
 
     }
 
-    private List<GameObject> GetBlockingObstacles(List<int> lanes)
+    // <summary>
+    // Returns a list of obstacles that the player would collide with if it moved to the given lane
+    // </summary>
+    private bool BlockingObstacleExistsOnLane(int lane)
     {
-        var trucks = new List<GameObject>();
-        trucks.AddRange(GameObject.FindGameObjectsWithTag("Obstacle"));
-        trucks.AddRange(GameObject.FindGameObjectsWithTag("JumpObstacle"));
-        trucks.AddRange(GameObject.FindGameObjectsWithTag("SlideObstacle"));
-        var objectsOnLane = new List<GameObject>();
+        var obstacles = new List<GameObject>();
+        obstacles.AddRange(GameObject.FindGameObjectsWithTag("Obstacle"));
+        obstacles.AddRange(GameObject.FindGameObjectsWithTag("JumpObstacle"));
+        obstacles.AddRange(GameObject.FindGameObjectsWithTag("SlideObstacle"));
 
-        foreach (var obj in trucks)
+        foreach (var obj in obstacles)
         {
+            // Hardcoded distances to obstacles for now
             if ((obj.transform.position.z < -12.0f || obj.transform.position.z > 1f) && obj.tag == "Obstacle") 
                 continue;
             if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && obj.tag == "JumpObstacle")
@@ -155,53 +162,43 @@ public class PlayerHeuristic : MonoBehaviour
             if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && obj.tag == "SlideObstacle")
                 continue;
 
-            foreach (int lane in lanes)
+            if (obj.transform.position.x == spawnerPositionsX[lane])
             {
-                if (obj.transform.position.x == spawnerPositionsX[lane])
-                {
-                    objectsOnLane.Add(obj);
-                    Debug.Log("Blocking obstacle: " + obj.tag + " on lane " + lane + " at " + obj.transform.position.z);
-                    return objectsOnLane;
-                }
+                return true;
             }
         }
 
-        return objectsOnLane;
+        return false;
     }
 
     private bool CanMoveToLane(int lane)
     {
         int currentLane = _playerController.GetCurrentLane();
         if (currentLane == lane) return true;
-        if (currentLane == 0 && lane == 1) 
+        if (currentLane == 1 && lane == 2)
         {
-            var blockingObstacles = GetBlockingObstacles(new List<int> {1});
-            if (blockingObstacles.Count > 0) return false;
+            return !BlockingObstacleExistsOnLane(2);
         }
         if (currentLane == 1 && lane == 0)
         {
-            var blockingObstacles = GetBlockingObstacles(new List<int> {0});
-            if (blockingObstacles.Count > 0) return false;
+            return !BlockingObstacleExistsOnLane(0);
         }
-        if (currentLane == 1 && lane == 2)
+        // else 1
+        if (currentLane == 0 && lane == 1) 
         {
-            var blockingObstacles = GetBlockingObstacles(new List<int> {2});
-            if (blockingObstacles.Count > 0) return false;
+            return !BlockingObstacleExistsOnLane(1);
         }
         if (currentLane == 2 && lane == 1)
         {
-            var blockingObstacles = GetBlockingObstacles(new List<int> {1});
-            if (blockingObstacles.Count > 0) return false;
+            return !BlockingObstacleExistsOnLane(1);
         }
         if (currentLane == 0 && lane == 2)
         {
-            var blockingObstacles = GetBlockingObstacles(new List<int> {1});
-            if (blockingObstacles.Count > 0) return false;
+            return !BlockingObstacleExistsOnLane(1);
         }
         if (currentLane == 2 && lane == 0)
         {
-            var blockingObstacles = GetBlockingObstacles(new List<int> {1});
-            if (blockingObstacles.Count > 0) return false;
+            return !BlockingObstacleExistsOnLane(1);
         }
 
         return true;
@@ -225,12 +222,10 @@ public class PlayerHeuristic : MonoBehaviour
         _playerController.TriggerIsSliding();
     }
 
-
     void FixedUpdate()
     {
         if (!IsEnabled) return;
         
-
         // Get closest object on each lane
         GameObject closestObjectOnLane0 = GetClosestGameObjectOnLane(0);
         GameObject closestObjectOnLane1 = GetClosestGameObjectOnLane(1);
@@ -256,35 +251,42 @@ public class PlayerHeuristic : MonoBehaviour
         int closestObjectLane = GetObjectsLane(closestObject);
         int secondClosestObjectLane = GetObjectsLane(secondClosestObject);
 
-
-        // Move to coin's lane
+        // Move to coin's lane (if possible)
         if (closestObject.tag == "Coin")
         {
-            Debug.Log("Coin");
             if (MoveToLane(closestObjectLane)) return;
         }
         if (secondClosestObject.tag == "Coin")
         {
-            Debug.Log("Coin");
             if (MoveToLane(secondClosestObjectLane)) return;
         }
         
+        // Dodge obstacle if its a train
         if (incomingObject.tag == "Obstacle") {
             List<int> lanes = new List<int> {0, 1, 2};
             lanes.Remove(closestObjectLane);
             lanes.Remove(secondClosestObjectLane);
 
             int thirdLane = lanes[0];
-            Debug.Log("First " + thirdLane);
+
+            // Prefer a lane to dodge to that has a jump or slide obstacle (only if its still far enough away)
+            if (thirdLane == GetActualPosition()) 
+            {
+                if ((secondClosestObject.tag == "SlideObstacle" || secondClosestObject.tag == "JumpObstacle")
+                    && GetDistanceToObject(secondClosestObject) >= 4.5f)
+                {
+                    thirdLane = secondClosestObjectLane;
+                }
+            }
+
             if (MoveToLane(thirdLane)) return;
         }
 
+        // If it's not a train, jump or slide accordingly
         if (incomingObject.tag == "JumpObstacle" || incomingObject.tag == "SlideObstacle")
         {
-            Debug.Log("Jump/Slide");
             if (GetDistanceToObject(incomingObject) <= 3.5f)
             {
-                
                 if (incomingObject.tag == "JumpObstacle")
                 {
                     Jump();
@@ -294,14 +296,7 @@ public class PlayerHeuristic : MonoBehaviour
                     Slide();
                 }
             }
-            return;
         }
     }
 
-    private int GetActualPosition()
-    {
-        if (player.transform.position.x <= -1.5f) return 0;
-        if (player.transform.position.x >= 1.5f) return 2;
-        return 1;
-    }
 }
