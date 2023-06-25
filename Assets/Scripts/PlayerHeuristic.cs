@@ -12,6 +12,8 @@ public class PlayerHeuristic : MonoBehaviour
     private GameObject secondClosestObject;
     private bool idle = false;
 
+    private GameObject player;
+
     private void InitializeSpawnerPositionsX()
     {
         // Does not work (all 0)
@@ -33,6 +35,8 @@ public class PlayerHeuristic : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         InitializeSpawnerPositionsX();
+
+        player = GameObject.Find("Player");
     }
 
     private List<GameObject> GetGameObjectsWithTagOnLane(string tag, int lane)
@@ -59,9 +63,9 @@ public class PlayerHeuristic : MonoBehaviour
     {
         List<GameObject> objectsOnLane = new List<GameObject>();
         objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("Obstacle", lane));
+        objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("Coin", lane));
         objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("JumpObstacle", lane));
         objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("SlideObstacle", lane));
-        objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("Coin", lane));
 
         return objectsOnLane;
     }
@@ -92,7 +96,11 @@ public class PlayerHeuristic : MonoBehaviour
 
     private float GetDistanceToObject(GameObject obj)
     {
-        return obj == null ? 1000.0f : Mathf.Abs(obj.transform.position.z) - 6.0f;
+        return obj == null 
+            ? 1000.0f 
+            : (obj.transform.position.z >= -6.0f) 
+                ? obj.transform.position.z + 6.0f
+                : 1000.0f;
     }
 
     private int GetObjectsLane(GameObject obj)
@@ -132,18 +140,28 @@ public class PlayerHeuristic : MonoBehaviour
 
     private List<GameObject> GetBlockingObstacles(List<int> lanes)
     {
-        var trucks = GameObject.FindGameObjectsWithTag("Obstacle");
+        var trucks = new List<GameObject>();
+        trucks.AddRange(GameObject.FindGameObjectsWithTag("Obstacle"));
+        trucks.AddRange(GameObject.FindGameObjectsWithTag("JumpObstacle"));
+        trucks.AddRange(GameObject.FindGameObjectsWithTag("SlideObstacle"));
         var objectsOnLane = new List<GameObject>();
 
         foreach (var obj in trucks)
         {
-            if (obj.transform.position.z < -16.0f && obj.transform.position.z > 6.2f) continue;
+            if ((obj.transform.position.z < -12.0f || obj.transform.position.z > 1f) && obj.tag == "Obstacle") 
+                continue;
+            if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && obj.tag == "JumpObstacle")
+                continue;
+            if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && obj.tag == "SlideObstacle")
+                continue;
 
             foreach (int lane in lanes)
             {
                 if (obj.transform.position.x == spawnerPositionsX[lane])
                 {
                     objectsOnLane.Add(obj);
+                    Debug.Log("Blocking obstacle: " + obj.tag + " on lane " + lane + " at " + obj.transform.position.z);
+                    return objectsOnLane;
                 }
             }
         }
@@ -186,14 +204,15 @@ public class PlayerHeuristic : MonoBehaviour
             if (blockingObstacles.Count > 0) return false;
         }
 
-         return true;
+        return true;
     }
 
-    private void MoveToLane(int lane)
+    private bool MoveToLane(int lane)
     {
-        if (!CanMoveToLane(lane)) return;
+        if (!CanMoveToLane(lane)) return false;
         _playerController.SetDesiredLane(lane);
         _playerController.MoveLane();
+        return true;
     }
 
     private void Jump()
@@ -211,75 +230,78 @@ public class PlayerHeuristic : MonoBehaviour
     {
         if (!IsEnabled) return;
         
-        if (!idle)
-        {
-            // Get closest object on each lane
-            GameObject closestObjectOnLane0 = GetClosestGameObjectOnLane(0);
-            GameObject closestObjectOnLane1 = GetClosestGameObjectOnLane(1);
-            GameObject closestObjectOnLane2 = GetClosestGameObjectOnLane(2);
 
-            // Get closest object overall
-            closestObject = GetClosestObject(
-                closestObjectOnLane0,
-                closestObjectOnLane1,
-                closestObjectOnLane2
-            );
+        // Get closest object on each lane
+        GameObject closestObjectOnLane0 = GetClosestGameObjectOnLane(0);
+        GameObject closestObjectOnLane1 = GetClosestGameObjectOnLane(1);
+        GameObject closestObjectOnLane2 = GetClosestGameObjectOnLane(2);
+        GameObject incomingObject = GetClosestGameObjectOnLane(GetActualPosition());
 
-            // Get second closest object overall
-            secondClosestObject = GetClosestObject(
-                closestObjectOnLane0 == closestObject ? null : closestObjectOnLane0,
-                closestObjectOnLane1 == closestObject ? null : closestObjectOnLane1,
-                closestObjectOnLane2 == closestObject ? null : closestObjectOnLane2
-            );
-        }
+        // Get closest object overall
+        closestObject = GetClosestObject(
+            closestObjectOnLane0,
+            closestObjectOnLane1,
+            closestObjectOnLane2
+        );
 
-        if (closestObject == null || secondClosestObject == null) return;
+        // Get second closest object overall
+        secondClosestObject = GetClosestObject(
+            closestObjectOnLane0 == closestObject ? null : closestObjectOnLane0,
+            closestObjectOnLane1 == closestObject ? null : closestObjectOnLane1,
+            closestObjectOnLane2 == closestObject ? null : closestObjectOnLane2
+        );
+
+        if (closestObject == null || secondClosestObject == null || incomingObject == null) return;
         
         int closestObjectLane = GetObjectsLane(closestObject);
         int secondClosestObjectLane = GetObjectsLane(secondClosestObject);
 
+
         // Move to coin's lane
         if (closestObject.tag == "Coin")
         {
-            MoveToLane(closestObjectLane);
+            Debug.Log("Coin");
+            if (MoveToLane(closestObjectLane)) return;
         }
-        else if (secondClosestObject.tag == "Coin")
+        if (secondClosestObject.tag == "Coin")
         {
-            MoveToLane(secondClosestObjectLane);
+            Debug.Log("Coin");
+            if (MoveToLane(secondClosestObjectLane)) return;
         }
-        // Move to Jump/Slide Obstacle's lane, wait, then jump/slide
-        else if (closestObject.tag == "JumpObstacle" || closestObject.tag == "SlideObstacle")
-        {
-            idle = true;
-            MoveToLane(GetObjectsLane(closestObject));
-            if (GetDistanceToObject(closestObject) <= 1.0f)
-            {
-                if (closestObject.tag == "JumpObstacle")
-                {
-                    Jump();
-                }
-                else if (closestObject.tag == "SlideObstacle")
-                {
-                    Slide();
-                }
-                idle = false;
-            }
-            return;
-        }
-        // Move to lane where the next obstacle is farthest away
-        else 
-        {
+        
+        if (incomingObject.tag == "Obstacle") {
             List<int> lanes = new List<int> {0, 1, 2};
             lanes.Remove(closestObjectLane);
             lanes.Remove(secondClosestObjectLane);
 
             int thirdLane = lanes[0];
-            MoveToLane(thirdLane);
+            Debug.Log("First " + thirdLane);
+            if (MoveToLane(thirdLane)) return;
         }
-        
-        // TODO:
-        // Problem: player.CurrentLane is set to a lane while the player is still moving to that lane
-        
-        
+
+        if (incomingObject.tag == "JumpObstacle" || incomingObject.tag == "SlideObstacle")
+        {
+            Debug.Log("Jump/Slide");
+            if (GetDistanceToObject(incomingObject) <= 3.5f)
+            {
+                
+                if (incomingObject.tag == "JumpObstacle")
+                {
+                    Jump();
+                }
+                else if (incomingObject.tag == "SlideObstacle")
+                {
+                    Slide();
+                }
+            }
+            return;
+        }
+    }
+
+    private int GetActualPosition()
+    {
+        if (player.transform.position.x <= -1.5f) return 0;
+        if (player.transform.position.x >= 1.5f) return 2;
+        return 1;
     }
 }
