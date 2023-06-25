@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5090472134530295519, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5877666251623159488, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -58,6 +62,10 @@ PrefabInstance:
     - target: {fileID: 6247678686556466199, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
       propertyPath: m_TagString
       value: JumpObstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366038813349785678, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
+      propertyPath: m_Constraints
+      value: 118
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}

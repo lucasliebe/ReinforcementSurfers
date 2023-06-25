@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isMoving = false;
     private bool isSliding = false;
+    private bool isJumping = false;
     private float[] movingTargetXs = {-3f, 0, 3f};
     private Rigidbody rb;
 
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
         {
             targetPosition.x = movingTargetXs[desiredLane];
         }
+        targetPosition.y += 0.1f;
 
         return targetPosition;
     }
@@ -88,11 +90,14 @@ public class PlayerController : MonoBehaviour
         Vector3 targetRotation = CalculateTargetRotation();
 
         transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        //rb.MovePosition(Vector3.Lerp(transform.localPosition, targetPosition, 0.15f));
+        //rb.AddForce((targetPosition - transform.localPosition) * 0.2f, ForceMode.Impulse);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
         // "Snap" position and rotation to prevent endless linear interpolation
         if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
         {
             //transform.localPosition = targetPosition;
+            rb.MovePosition(targetPosition);
             isMoving = false;
         }
         if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.1f)
@@ -125,10 +130,18 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerIsJumping()
     {
-        if (transform.position.y <= 1.1f)
+        if (!isJumping)
         {
             rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
+            isJumping = true;
+            Invoke(nameof(EndJumping), 0.7f);
         }
+    }
+
+    private void EndJumping()
+    {
+        isJumping = false;
+        Debug.Log("end");
     }
 
     public void TriggerIsSliding()
@@ -154,6 +167,10 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Ramp"))
+        {
+            rb.AddForce(Physics.gravity * -1.6f, ForceMode.Impulse);
+        }
         if (!isCollided && collision.gameObject.CompareTag("Coin"))
         {
             score++;
