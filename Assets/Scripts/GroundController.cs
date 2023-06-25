@@ -23,6 +23,7 @@ public class GroundController : MonoBehaviour
     private Random rnd = new Random();
     ObstacleTimePrefabs obstacleTimePrefabs = new ObstacleTimePrefabs();
     private int decision = 0;
+    (int, Dictionary<int, Dictionary<int, int>>) randomObstacle;
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +77,7 @@ public class GroundController : MonoBehaviour
 
     private void SpawnPrefabObstacles(Dictionary<int, Dictionary<int, int>> obstacles)
     {
+        Debug.Log(RoundToTen(prefabSpawnTimer));
         try 
         {
             var obstaclesOnLane = obstacles[RoundToTen(prefabSpawnTimer)];
@@ -94,13 +96,16 @@ public class GroundController : MonoBehaviour
                     case 3:
                         spawners[obstacle.Key].triggerSlideObstacle();
                         break;
+                    case 4:
+                        Debug.Log("Coin");
+                        spawners[obstacle.Key].triggerCoin();
+                        break;
                 }
             }
         }
         catch (Exception) {}
 
         prefabSpawnTimer += 10;
-
     }
 
     private void SpawnObstacles()
@@ -148,22 +153,22 @@ public class GroundController : MonoBehaviour
     {
         if (decision == 0)
         {
+            // Distance between intervals of obstacles
             resetTimer += 1;
-            if (resetTimer > (int)(10 / speed))
+            if (resetTimer > (int)(18 / speed))
             {
                 decision = rnd.Next(1, 3);
                 resetTimer = 0;
                 lanesOccupied = new int[lanes];
                 Array.Fill(lanesOccupied, -1);
+                int randomIndex = rnd.Next(obstacleTimePrefabs.obstacles.Count);
+                randomObstacle = obstacleTimePrefabs.obstacles[randomIndex];
             }
         }
         
         // Spawn random prefab obstacles
         if (decision == 1)
         {
-            Debug.Log("Spawn prefab obstacles");
-            int randomIndex = rnd.Next(obstacleTimePrefabs.obstacles.Count);
-            var randomObstacle = obstacleTimePrefabs.obstacles[randomIndex];
             SpawnPrefabObstacles(randomObstacle.Item2);
             if (prefabSpawnTimer >= randomObstacle.Item1) 
             {
@@ -174,7 +179,6 @@ public class GroundController : MonoBehaviour
         // Spawn row of random obstacles
         else if (decision == 2)
         {
-            Debug.Log("Spawn random obstacles");
             randomSpawnTimer += 1;
             SpawnObstacles();
             if (randomSpawnTimer > (int)(2.5f / speed))
