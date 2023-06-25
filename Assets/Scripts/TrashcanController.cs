@@ -18,13 +18,6 @@ public class TrashcanController : MonoBehaviour
     
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Obstacle" || 
-        collision.gameObject.tag == "Coin" || 
-        collision.gameObject.tag == "JumpObstacle" ||
-        collision.gameObject.tag == "SlideObstacle"
-        )
-        {
-            Destroy(collision.gameObject);
-        }
+        Destroy(collision.gameObject);
     }
 }

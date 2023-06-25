@@ -141,7 +141,6 @@ public class PlayerController : MonoBehaviour
     private void EndJumping()
     {
         isJumping = false;
-        Debug.Log("end");
     }
 
     public void TriggerIsSliding()

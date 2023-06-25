@@ -81,24 +81,28 @@ public class GroundController : MonoBehaviour
             if (rnd.Next(100) > 25) continue;
             if (lanesOccupied[i] != -1) continue;
 
-            int obstacleType = rnd.Next(4);
+            int obstacleType = rnd.Next(5);
             switch (obstacleType)
             {
                 case 0:
                     if (spawnedObstacles >= lanes - 1) continue;
-                    spawners[i].triggerObstacle();
+                    spawners[i].triggerTruck();
                     lanesOccupied[i] = 0;
                     spawnedObstacles++;
                     break;
                 case 1:
-                    spawners[i].triggerJumpObstacle();
+                    spawners[i].triggerRamp();
                     lanesOccupied[i] = 1;
                     break;
                 case 2:
+                    spawners[i].triggerJumpObstacle();
+                    lanesOccupied[i] = 1;
+                    break;
+                case 3:
                     spawners[i].triggerSlideObstacle();
                     lanesOccupied[i] = 2;
                     break;
-                case 3:
+                case 4:
                     spawners[i].triggerCoin();
                     lanesOccupied[i] = 3;
                     break;

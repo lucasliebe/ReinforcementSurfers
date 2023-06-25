@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 5 channels x 5 width x 20 height
+  m_ObservationShape: 6 channels x 5 width x 20 height
   m_SensorName: GridSensor
   m_ObservationStacks: 1
   m_CompressionType: 1
@@ -371,7 +371,7 @@ MonoBehaviour:
     IsEnabled: 0
     IsStandby: 0
   m_GridShape:
-    NumChannels: 5
+    NumChannels: 6
     Width: 5
     Height: 20
   m_ClearCacheOnReset: 1
@@ -447,6 +447,20 @@ MonoBehaviour:
       Index: -1
       Enabled: 1
       Color: {r: 0.14157449, g: 0.79350877, b: 0.48927182, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: Ramp
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 4695762599469296400, guid: caa3fd273abc626b3948b5394a52ea77, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.60723513, g: 0.1412044, b: 0.83968616, a: 1}
     m_DetectorSpaceType: 0
   m_RotationType: 0
   m_DetectionBounds:
