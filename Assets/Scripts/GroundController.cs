@@ -87,7 +87,7 @@ public class GroundController : MonoBehaviour
                     case 0: 
                         break;
                     case 1:
-                        spawners[obstacle.Key].triggerObstacle();
+                        spawners[obstacle.Key].triggerTruck();
                         break;
                     case 2:
                         spawners[obstacle.Key].triggerJumpObstacle();
