@@ -15,17 +15,16 @@ public class PlayerController : MonoBehaviour
     private float total_score = 0f;
 
     private bool isMoving = false;
-    private bool isJumping = false;
     private bool isSliding = false;
+    private bool isJumping = false;
     private float[] movingTargetXs = {-3f, 0, 3f};
-    private float slidingTargetY = 0.5f;
-    private float jumpingTargetY = 4f;
-    private float defaultTargetY = 1.1f;
+    private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
         groundController = GameObject.Find("Ground").GetComponent<GroundController>();
+        rb = GetComponent<Rigidbody>();
     }
 
     public void Reset()
@@ -46,18 +45,7 @@ public class PlayerController : MonoBehaviour
         {
             targetPosition.x = movingTargetXs[desiredLane];
         }
-        if (isJumping)
-        {
-            targetPosition.y = jumpingTargetY;
-        }
-        if (isSliding)
-        {
-            targetPosition.y = slidingTargetY;
-        }
-        else if (!isJumping && !isSliding)
-        {
-            targetPosition.y = defaultTargetY;
-        }
+        targetPosition.y += 0.1f;
 
         return targetPosition;
     }
@@ -102,22 +90,22 @@ public class PlayerController : MonoBehaviour
         Vector3 targetRotation = CalculateTargetRotation();
 
         transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        //rb.MovePosition(Vector3.Lerp(transform.localPosition, targetPosition, 0.15f));
+        //rb.AddForce((targetPosition - transform.localPosition) * 0.2f, ForceMode.Impulse);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
         // "Snap" position and rotation to prevent endless linear interpolation
         if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
         {
-            transform.localPosition = targetPosition;
+            //transform.localPosition = targetPosition;
+            rb.MovePosition(targetPosition);
             isMoving = false;
-            isSliding = false;
         }
-        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.2f)
+        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.1f)
         {
             transform.localRotation = Quaternion.Euler(targetRotation);
+            isSliding = false;
         }
-        if (jumpingTargetY - transform.localPosition.y < 0.1f)
-        {
-            isJumping = false;
-        }
+        rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
         total_score += 0.0005f;
     }
     
@@ -142,15 +130,25 @@ public class PlayerController : MonoBehaviour
 
     public void TriggerIsJumping()
     {
-        if (transform.position.y <= 1.1f) isJumping = true;
+        if (!isJumping)
+        {
+            rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
+            isJumping = true;
+            Invoke(nameof(EndJumping), 0.7f);
+        }
+    }
+
+    private void EndJumping()
+    {
+        isJumping = false;
     }
 
     public void TriggerIsSliding()
     {
         if (transform.rotation.x <= 0) 
         {
+            rb.AddForce(Physics.gravity * 2f, ForceMode.Impulse);
             isSliding = true;
-            isJumping = false;
         }
     }
 
@@ -168,6 +166,10 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Ramp"))
+        {
+            rb.AddForce(Physics.gravity * -1.6f, ForceMode.Impulse);
+        }
         if (!isCollided && collision.gameObject.CompareTag("Coin"))
         {
             score++;

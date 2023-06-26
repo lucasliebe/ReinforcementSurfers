@@ -264,10 +264,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!114 &4387001844303986643
 MonoBehaviour:
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 5 channels x 5 width x 20 height
+  m_ObservationShape: 6 channels x 5 width x 20 height
   m_SensorName: GridSensor
   m_ObservationStacks: 1
   m_CompressionType: 1
@@ -371,7 +371,7 @@ MonoBehaviour:
     IsEnabled: 0
     IsStandby: 0
   m_GridShape:
-    NumChannels: 5
+    NumChannels: 6
     Width: 5
     Height: 20
   m_ClearCacheOnReset: 1
@@ -408,9 +408,9 @@ MonoBehaviour:
     m_DetectorSpaceType: 0
   - Tag: Obstacle
     Enabled: 1
-    DetectionType: 1
+    DetectionType: 0
     Modifier: 0
-    Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
+    Detectable: {fileID: 6611751696036684593, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
     m_UserObservables:
       m_Observables: []
     m_Observables:
@@ -418,7 +418,7 @@ MonoBehaviour:
       Type: 1
       Index: -1
       Enabled: 1
-      Color: {r: 0.84647894, g: 0.35696208, b: 0.44267058, a: 1}
+      Color: {r: 0.7664424, g: 0.15407537, b: 0.47513685, a: 1}
     m_DetectorSpaceType: 0
   - Tag: JumpObstacle
     Enabled: 1
@@ -448,18 +448,32 @@ MonoBehaviour:
       Enabled: 1
       Color: {r: 0.14157449, g: 0.79350877, b: 0.48927182, a: 1}
     m_DetectorSpaceType: 0
+  - Tag: Ramp
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 4695762599469296400, guid: caa3fd273abc626b3948b5394a52ea77, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.60723513, g: 0.1412044, b: 0.83968616, a: 1}
+    m_DetectorSpaceType: 0
   m_RotationType: 0
   m_DetectionBounds:
-    m_Center: {x: 0, y: 1, z: 19}
+    m_Center: {x: 0, y: 0, z: 20}
     m_Extent: {x: 5, y: 2, z: 20}
   m_EditorBounds:
-    m_Center: {x: 0, y: 1, z: 19}
+    m_Center: {x: 0, y: 0, z: 20}
     m_Extent: {x: 5, y: 2, z: 20}
   m_CellSize: 2
   m_NumCells: {x: 5, y: 1, z: 20}
   m_DetectionSize: {x: 10, y: 4, z: 40}
   m_BoundsSize: {x: 10, y: 4, z: 40}
-  m_Offset: {x: 0, y: 1, z: 19}
+  m_Offset: {x: 0, y: 0, z: 20}
 --- !u!1 &4387001845696453424
 GameObject:
   m_ObjectHideFlags: 0

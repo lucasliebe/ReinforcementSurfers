@@ -10,6 +10,7 @@ TagManager:
   - JumpObstacle
   - SlideObstacle
   - SpawnArea
+  - Ramp
   layers:
   - Default
   - TransparentFX

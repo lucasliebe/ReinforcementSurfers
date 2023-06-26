@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SpawnController : MonoBehaviour
 {
-    public GameObject obstaclePrefab;
+    public GameObject truckPrefab;
+    public GameObject rampPrefab;
     public GameObject coinPrefab;
     public GameObject jumpObstaclePrefab;
     public GameObject slideObstaclePrefab;
@@ -24,9 +25,15 @@ public class SpawnController : MonoBehaviour
         
     }
 
-    public void triggerObstacle()
+    public void triggerTruck()
     {
-        GameObject obstacle = Instantiate(obstaclePrefab, transform.position, Quaternion.identity, _trainingArea.transform);
+        GameObject obstacle = Instantiate(truckPrefab, transform.position, Quaternion.identity, _trainingArea.transform);
+        obstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
+    }
+    
+    public void triggerRamp()
+    {
+        GameObject obstacle = Instantiate(rampPrefab, transform.position, Quaternion.identity, _trainingArea.transform);
         obstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
     }
     
