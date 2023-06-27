@@ -22,6 +22,7 @@ public class GroundController : MonoBehaviour
     private bool canSpawn = true;
     private Random rnd = new Random();
     ObstacleTimePrefabs obstacleTimePrefabs = new ObstacleTimePrefabs();
+    public bool testMode;
     private int decision = 0;
     (int, Dictionary<int, Dictionary<int, int>>) randomObstacle;
 
@@ -163,8 +164,16 @@ public class GroundController : MonoBehaviour
                 resetTimer = 0;
                 lanesOccupied = new int[lanes];
                 Array.Fill(lanesOccupied, -1);
-                int randomIndex = rnd.Next(obstacleTimePrefabs.obstacles.Count);
-                randomObstacle = obstacleTimePrefabs.obstacles[randomIndex];
+                if (testMode)
+                {
+                    decision = 1;
+                    randomObstacle = obstacleTimePrefabs.getTestObstacle();
+                }
+                else
+                {
+                    int randomIndex = rnd.Next(obstacleTimePrefabs.obstacles.Count);
+                    randomObstacle = obstacleTimePrefabs.obstacles[randomIndex];
+                }
             }
         }
         

@@ -311,9 +311,25 @@ public class ObstacleTimePrefabs : MonoBehaviour
                     }
                 },
             }  
-        ),
-        
+        ), 
     };
 
-   
+	public List<(int, Dictionary<int, Dictionary<int, int>>)> testObstacles = new List<(int, Dictionary<int, Dictionary<int, int>>)>()
+    {
+        (10, new Dictionary<int, Dictionary<int, int>>()
+            {
+                {0, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.Coin}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
+                    }
+                },
+            }  
+        ),
+	};
+
+	private int testIdx = 0;
+	public (int, Dictionary<int, Dictionary<int, int>>) getTestObstacle() {
+		testIdx = testIdx % testObstacles.Count;
+		return testObstacles[testIdx++];
+	}
 }
