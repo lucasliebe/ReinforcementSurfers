@@ -60,10 +60,10 @@ public class PlayerAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        Tuple<bool, int> state = _playerController.GetState();
-        AddReward(state.Item2 * 0.5f);
+        Tuple<bool, int, int> state = _playerController.GetState();
+        AddReward(state.Item2 * 0.4f * state.Item3);
         if (state.Item1) {
-            AddReward(-1f);
+            AddReward(-1f * state.Item3);
             EndEpisode();
         }
         if (actions.DiscreteActions[0] != 1) {
@@ -71,7 +71,7 @@ public class PlayerAgent : Agent
             _playerController.SetDesiredLane(_playerController.GetCurrentLane() + (actions.DiscreteActions[0] - 1));
             _playerController.MoveLane();
         } else {
-            AddReward(0.001f);
+            AddReward(0.001f * (float) Math.Pow(state.Item3, 2));
         }
         if (actions.DiscreteActions[1] == 0)
         {
@@ -80,6 +80,14 @@ public class PlayerAgent : Agent
         else if (actions.DiscreteActions[1] == 1)
         {
             _playerController.TriggerIsSliding();
+        }
+
+        if (actions.DiscreteActions[2] == 0)
+        {
+            _playerController.TriggerMultiplier();
+        } else if (actions.DiscreteActions[2] == 1)
+        {
+            _playerController.TriggerShield();
         }
     }
 }
