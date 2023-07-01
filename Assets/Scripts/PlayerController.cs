@@ -3,38 +3,58 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public TMP_Text scoreText;
+    public GameObject multiplierIcon;
+    public GameObject shieldIcon;
     private GroundController groundController;
+    private Rigidbody rb;
+    private Material material;
+
     private int desiredLane = 1; // 0 = left, higher = right
     private int currentLane = 1;
-    private bool isCollided = false;
     private int score = 0;
+    private int multiplier = 1;
     private float total_score = 0f;
-
+    private float[] movingTargetXs = {-3f, 0, 3f};
+    
+    private bool isCollided = false;
     private bool isMoving = false;
     private bool isSliding = false;
     private bool isJumping = false;
-    private float[] movingTargetXs = {-3f, 0, 3f};
-    private Rigidbody rb;
+    private bool isShielded = false;
+    private bool canMultiply = true;
+    private bool canShield = true;
 
     // Start is called before the first frame update
     void Start()
     {
         groundController = GameObject.Find("Ground").GetComponent<GroundController>();
         rb = GetComponent<Rigidbody>();
+        material = GetComponent<Renderer>().material; 
+        material.color = new Color(0, 0, 0);
     }
 
     public void Reset()
     {
+        CancelInvoke();
+        EnableMultiplier();
+        EnableShield();
+        EndJumping();
         isCollided = false;
+        isMoving = false;
+        isSliding = false;
+        isShielded = false;
         desiredLane = 1;
         currentLane = 1;
         score = 0;
         total_score = 0;
+        multiplier = 1;
         transform.localPosition = new Vector3(0, 1.1f, -6);
+        material.color = new Color(0, 0, 0);
     }
 
     private Vector3 CalculateTargetPosition()
@@ -76,6 +96,14 @@ public class PlayerController : MonoBehaviour
         {
             TriggerIsSliding();
         }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            TriggerMultiplier();
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            TriggerShield();
+        }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
             // ReSharper disable twice Unity.PerformanceCriticalCodeInvocation
@@ -106,7 +134,7 @@ public class PlayerController : MonoBehaviour
             isSliding = false;
         }
         rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
-        total_score += 0.0005f;
+        total_score += 0.0005f * multiplier;
     }
     
     public void MoveLane()
@@ -151,38 +179,87 @@ public class PlayerController : MonoBehaviour
             isSliding = true;
         }
     }
-
-    public Tuple<bool, int> GetState()
+    
+    public void TriggerMultiplier()
     {
-        Tuple<bool, int> state = new Tuple<bool, int>(isCollided, score);
-        score = 0;
-        return state;
+        if (canMultiply)
+        {
+            multiplier = 2;
+            material.color += new Color(0, 255, 0);
+            canMultiply = false;
+            multiplierIcon.SetActive(false);
+            Invoke(nameof(EndMultiplier), 3f);
+        }
+    }
+    
+    private void EndMultiplier()
+    {
+        multiplier = 1;
+        material.color -= new Color(0, 255, 0);
+        Invoke(nameof(EnableMultiplier), 6f);
     }
 
-    public int GetScore()
+    private void EnableMultiplier()
     {
-        return score;
+        canMultiply = true;
+        multiplierIcon.SetActive(true);
+    }
+    
+    public void TriggerShield()
+    {
+        if (canShield)
+        {
+            isShielded = true;
+            material.color += new Color(0, 0, 255);
+            canShield = false;
+            shieldIcon.SetActive(false);
+            Invoke(nameof(EndShield), 1.5f);
+        }
+    }
+    
+    private void EndShield()
+    {
+        isShielded = false;
+        material.color -= new Color(0, 0, 255);
+        Invoke(nameof(EnableShield), 10f);
+    }
+
+    private void EnableShield()
+    {
+        canShield = true;
+        shieldIcon.SetActive(true);
+    }
+
+    public Tuple<bool, int, int> GetState()
+    {
+        Tuple<bool, int, int> state = new Tuple<bool, int, int>(isCollided, score, multiplier);
+        score = 0;
+        return state;
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ramp"))
         {
-            rb.AddForce(Physics.gravity * -1.6f, ForceMode.Impulse);
+            rb.AddForce(Physics.gravity * -1.45f, ForceMode.Impulse);
+            isJumping = true;
+            Invoke(nameof(EndJumping), 0.3f);
         }
+        if (isShielded) return;
+        
         if (!isCollided && collision.gameObject.CompareTag("Coin"))
         {
             score++;
-            total_score += 0.5f;
-            Destroy(collision.gameObject);
+            total_score += 0.4f * multiplier;
+            Destroy(collision.gameObject);  
         }
         else if (!isCollided && 
-            (collision.gameObject.CompareTag("Obstacle") || 
-            collision.gameObject.CompareTag("JumpObstacle") || 
+            (collision.gameObject.CompareTag("Obstacle") ||
+            collision.gameObject.CompareTag("JumpObstacle") ||
             collision.gameObject.CompareTag("SlideObstacle")))
         {
 			Debug.Log("Game Over! Total Score: " + MathF.Round(total_score*1000f)/1000f);
-            score = -1;
+            score = 0;
             isCollided = true;
             // Time.timeScale = 0;
             // UnityEditor.EditorApplication.isPlaying = false;
