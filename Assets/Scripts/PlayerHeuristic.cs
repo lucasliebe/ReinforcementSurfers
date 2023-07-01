@@ -252,6 +252,14 @@ public class PlayerHeuristic : MonoBehaviour
     {
         if (!IsEnabled) return;
         
+        if (_playerController.canMultiply)
+            if (Random.value < 0.01f)
+                _playerController.TriggerMultiplier();
+
+        if (_playerController.canShield)
+            if (Random.value < 0.01f)
+                _playerController.TriggerMultiplier();
+
         // Get closest object on each lane
         GameObject closestObjectOnLane0 = GetClosestGameObjectOnLane(0);
         GameObject closestObjectOnLane1 = GetClosestGameObjectOnLane(1);

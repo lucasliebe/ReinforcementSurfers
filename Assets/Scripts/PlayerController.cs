@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour
     private bool isSliding = false;
     private bool isJumping = false;
     private bool isShielded = false;
-    private bool canMultiply = true;
-    private bool canShield = true;
+    public bool canMultiply = true;
+    public bool canShield = true;
 
     // Start is called before the first frame update
     void Start()
