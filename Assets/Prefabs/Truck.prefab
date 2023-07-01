@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 1504948193383509930}
   m_Layer: 0
   m_Name: Truck
-  m_TagString: Untagged
+  m_TagString: TruckObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -269,6 +269,10 @@ PrefabInstance:
     - target: {fileID: 3977615350429632840, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
       propertyPath: m_Name
       value: Truck_collision
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977615350429632840, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     - target: {fileID: 7609326188015479200, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
       propertyPath: m_RootOrder

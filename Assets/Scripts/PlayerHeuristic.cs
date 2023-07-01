@@ -67,10 +67,11 @@ public class PlayerHeuristic : MonoBehaviour
     private List<GameObject> GetAllGameObjectsOnLane(int lane)
     {
         List<GameObject> objectsOnLane = new List<GameObject>();
-        objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("Obstacle", lane));
+        objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("TruckObstacle", lane));
         objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("Coin", lane));
         objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("JumpObstacle", lane));
         objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("SlideObstacle", lane));
+        objectsOnLane.AddRange(GetGameObjectsWithTagOnLane("RampObstacle", lane));
 
         return objectsOnLane;
     }
@@ -148,18 +149,22 @@ public class PlayerHeuristic : MonoBehaviour
     private bool BlockingObstacleExistsOnLane(int lane)
     {
         var obstacles = new List<GameObject>();
-        obstacles.AddRange(GetGameObjectsWithTagOnLane("Obstacle", lane));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("TruckObstacle", lane));
         obstacles.AddRange(GetGameObjectsWithTagOnLane("JumpObstacle", lane));
         obstacles.AddRange(GetGameObjectsWithTagOnLane("SlideObstacle", lane));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("RampObstacle", lane));
 
         foreach (var obj in obstacles)
         {
             // Hardcoded distances to obstacles for now
-            if ((obj.transform.position.z < -12.0f || obj.transform.position.z > 1f) && obj.tag == "Obstacle") 
+            if ((obj.transform.position.z < -12.0f || obj.transform.position.z > 1f) && 
+                    (obj.tag == "TruckObstacle" || obj.tag == "RampObstacle")) 
                 continue;
-            if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && obj.tag == "JumpObstacle")
+            if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && 
+                    obj.tag == "JumpObstacle")
                 continue;
-            if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && obj.tag == "SlideObstacle")
+            if ((obj.transform.position.z < -8.0f || obj.transform.position.z > -3f) && 
+                    obj.tag == "SlideObstacle")
                 continue;
 
             if (obj.transform.position.x == spawnerPositionsX[lane])
@@ -262,7 +267,7 @@ public class PlayerHeuristic : MonoBehaviour
         }
         
         // Dodge obstacle if its a train
-        if (incomingObject.tag == "Obstacle") {
+        if (incomingObject.tag == "TruckObstacle") {
             List<int> lanes = new List<int> {0, 1, 2};
             lanes.Remove(closestObjectLane);
             lanes.Remove(secondClosestObjectLane);
@@ -282,7 +287,7 @@ public class PlayerHeuristic : MonoBehaviour
         // If it's not a train, jump or slide accordingly
         if (incomingObject.tag == "JumpObstacle" || incomingObject.tag == "SlideObstacle")
         {
-            if (GetDistanceToObject(incomingObject) <= 3.5f)
+            if (GetDistanceToObject(incomingObject) <= 4.0f)
             {
                 if (incomingObject.tag == "JumpObstacle")
                 {

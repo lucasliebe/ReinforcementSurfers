@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
 			Debug.Log("Game Over! Total Score: " + MathF.Round(total_score*1000f)/1000f);
             score = -1;
             isCollided = true;
-            // Time.timeScale = 0;
+            Time.timeScale = 0;
             // UnityEditor.EditorApplication.isPlaying = false;
             // Application.Quit();
         }

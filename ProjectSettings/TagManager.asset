@@ -11,6 +11,8 @@ TagManager:
   - SlideObstacle
   - SpawnArea
   - Ramp
+  - RampObstacle
+  - TruckObstacle
   layers:
   - Default
   - TransparentFX
