@@ -37,14 +37,14 @@ public class PlayerHeuristic : MonoBehaviour
         player = GameObject.Find("Player");
     }
 
-    private int GetActualPosition()
+    private int GetActualLane()
     {
         if (player.transform.position.x <= -1.5f) return 0;
         if (player.transform.position.x >= 1.5f) return 2;
         return 1;
     }
 
-    private List<GameObject> GetGameObjectsWithTagOnLane(string tag, int lane)
+    private List<GameObject> GetGameObjectsWithTagOnLane(string tag, int lane, bool ignoreBehindPlayer = true)
     {
         var objectsWithTag = GameObject.FindGameObjectsWithTag(tag);
         var objectsOnLane = new List<GameObject>();
@@ -52,7 +52,7 @@ public class PlayerHeuristic : MonoBehaviour
         foreach (var obj in objectsWithTag)
         {
             // Object is behind player
-            if (obj.transform.position.z < player.transform.position.z) continue;
+            if (obj.transform.position.z < player.transform.position.z && ignoreBehindPlayer) continue;
 
             if (obj.transform.position.x == spawnerPositionsX[lane])
             {
@@ -144,15 +144,36 @@ public class PlayerHeuristic : MonoBehaviour
     }
 
     // <summary>
+    // Returns if player is currently running up a ramp to prevent leaving the ramp too early
+    // and colliding with the side of the ramp
+    // </summary>
+    private bool IsCurrentlyOnRamp()
+    {
+        var ramps = GetGameObjectsWithTagOnLane("RampObstacle", GetActualLane(), false);
+
+        foreach (var ramp in ramps)
+        {
+            if (ramp.transform.position.z >= -6.0f && ramp.transform.position.z < 0.5f)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // <summary>
     // Returns a list of obstacles that the player would collide with if it moved to the given lane
     // </summary>
     private bool BlockingObstacleExistsOnLane(int lane)
     {
         var obstacles = new List<GameObject>();
-        obstacles.AddRange(GetGameObjectsWithTagOnLane("TruckObstacle", lane));
-        obstacles.AddRange(GetGameObjectsWithTagOnLane("JumpObstacle", lane));
-        obstacles.AddRange(GetGameObjectsWithTagOnLane("SlideObstacle", lane));
-        obstacles.AddRange(GetGameObjectsWithTagOnLane("RampObstacle", lane));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("TruckObstacle", lane, false));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("JumpObstacle", lane, false));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("SlideObstacle", lane, false));
+        obstacles.AddRange(GetGameObjectsWithTagOnLane("RampObstacle", lane, false));
+
+        if (IsCurrentlyOnRamp()) return true;
 
         foreach (var obj in obstacles)
         {
@@ -178,7 +199,7 @@ public class PlayerHeuristic : MonoBehaviour
 
     private bool CanMoveToLane(int lane)
     {
-        int currentLane = _playerController.GetCurrentLane();
+        int currentLane = GetActualLane();
         if (currentLane == lane) return true;
         if (currentLane == 1 && lane == 2)
         {
@@ -235,7 +256,7 @@ public class PlayerHeuristic : MonoBehaviour
         GameObject closestObjectOnLane0 = GetClosestGameObjectOnLane(0);
         GameObject closestObjectOnLane1 = GetClosestGameObjectOnLane(1);
         GameObject closestObjectOnLane2 = GetClosestGameObjectOnLane(2);
-        GameObject incomingObject = GetClosestGameObjectOnLane(GetActualPosition());
+        GameObject incomingObject = GetClosestGameObjectOnLane(GetActualLane());
 
         // Get closest object overall
         closestObject = GetClosestObject(
@@ -266,6 +287,11 @@ public class PlayerHeuristic : MonoBehaviour
             if (MoveToLane(secondClosestObjectLane)) return;
         }
         
+        if (incomingObject.tag == "RampObstacle")
+        {
+            return;
+        }
+
         // Dodge obstacle if its a train
         if (incomingObject.tag == "TruckObstacle") {
             List<int> lanes = new List<int> {0, 1, 2};
@@ -280,6 +306,17 @@ public class PlayerHeuristic : MonoBehaviour
             {
                 thirdLane = secondClosestObjectLane;
             }
+            else if ((closestObject.tag == "SlideObstacle" || closestObject.tag == "JumpObstacle")
+                && GetDistanceToObject(closestObject) >= 4.5f)
+            {
+                thirdLane = closestObjectLane;
+            }
+            // Or prefer a lane to dodge to that has a ramp obstacle (only if its still far enough away)
+            else if (secondClosestObject.tag == "RampObstacle" 
+                && GetDistanceToObject(secondClosestObject) >= 7.5f)
+            {
+                thirdLane = secondClosestObjectLane;
+            }
 
             if (MoveToLane(thirdLane)) return;
         }
@@ -287,7 +324,18 @@ public class PlayerHeuristic : MonoBehaviour
         // If it's not a train, jump or slide accordingly
         if (incomingObject.tag == "JumpObstacle" || incomingObject.tag == "SlideObstacle")
         {
-            if (GetDistanceToObject(incomingObject) <= 4.0f)
+            var distance = GetDistanceToObject(incomingObject);
+
+            // Make sure to be on the ground 
+            if (distance >= 11.0f && distance <= 16.0f)
+            {
+                if (player.transform.position.y > 1.5f)
+                {
+                    Slide();
+                }
+            }
+
+            if (distance <= 4.0f)
             {
                 if (incomingObject.tag == "JumpObstacle")
                 {

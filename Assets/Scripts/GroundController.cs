@@ -163,7 +163,7 @@ public class GroundController : MonoBehaviour
             resetTimer += 1;
             if (resetTimer > (int)(18 / speed))
             {
-                decision = rnd.Next(2, 3);
+                decision = rnd.Next(1, 3);
                 resetTimer = 0;
                 lanesOccupied = new int[lanes];
                 Array.Fill(lanesOccupied, -1);
