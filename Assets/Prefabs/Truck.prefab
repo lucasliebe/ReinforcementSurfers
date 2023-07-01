@@ -266,6 +266,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4854692554745959298}
     m_Modifications:
+    - target: {fileID: 826390243947306947, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
+      objectReference: {fileID: 0}
     - target: {fileID: 3977615350429632840, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
       propertyPath: m_Name
       value: Truck_collision
@@ -317,6 +321,10 @@ PrefabInstance:
     - target: {fileID: 7609326188015479200, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8537072708682042460, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
+      propertyPath: m_TagString
+      value: Obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}

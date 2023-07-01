@@ -301,7 +301,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
---- !u!1001 &1088137000
+--- !u!1001 &2115665492
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -339,14 +339,6 @@ PrefabInstance:
     - target: {fileID: 4387001844303986642, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
       propertyPath: m_IsKinematic
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4387001844303986642, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4387001844303986671, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 4387001845696453424, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
       propertyPath: m_Name
@@ -396,34 +388,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4387001845784093861, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: speed
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5726004872988316892, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5726004872988316892, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5726004872988316892, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6550991646205487562, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: ScrollSpeedX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6550991646205487562, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-      propertyPath: ScrollSpeedY
-      value: -0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 4387001844303986670, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
-    - {fileID: 4387001844303986668, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
     - {fileID: 4387001844303986641, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
+    - {fileID: 2930067681524104988, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
+    - {fileID: 8454697730754007428, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
     - {fileID: 4387001844303986643, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
     - {fileID: 4387001844303986640, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 295e3eea1e020d5478b943099737b63b, type: 3}
