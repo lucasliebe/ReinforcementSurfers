@@ -61,7 +61,8 @@ public class GroundController : MonoBehaviour
         Transform parentT = transform.parent;
         foreach (Transform childT in parentT)
         {
-            if(childT.CompareTag("Obstacle")) Destroy(childT.gameObject);
+            if(childT.CompareTag("TruckObstacle")) Destroy(childT.gameObject);
+            if(childT.CompareTag("RampObstacle")) Destroy(childT.gameObject);
             if(childT.CompareTag("Coin")) Destroy(childT.gameObject);
             if(childT.CompareTag("JumpObstacle")) Destroy(childT.gameObject);
             if(childT.CompareTag("SlideObstacle")) Destroy(childT.gameObject);

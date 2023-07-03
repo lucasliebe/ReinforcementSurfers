@@ -401,6 +401,8 @@ MonoBehaviour:
   scoreText: {fileID: 8020626539228099867}
   multiplierIcon: {fileID: 1253257126698190505}
   shieldIcon: {fileID: 245995733403083698}
+  canMultiply: 1
+  canShield: 1
 --- !u!54 &4387001844303986642
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -450,8 +452,8 @@ MonoBehaviour:
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 030000000300000003000000
-    VectorActionSize: 030000000300000003000000
+      BranchSizes: 0300000003000000
+    VectorActionSize: 0300000003000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -554,20 +556,6 @@ MonoBehaviour:
       Enabled: 1
       Color: {r: 0.17046371, g: 0.364068, b: 0.91204435, a: 1}
     m_DetectorSpaceType: 0
-  - Tag: Obstacle
-    Enabled: 1
-    DetectionType: 0
-    Modifier: 0
-    Detectable: {fileID: 6611751696036684593, guid: a7d3a3d868b5b989280313c2cb8f41b9, type: 3}
-    m_UserObservables:
-      m_Observables: []
-    m_Observables:
-    - Name: One-Hot
-      Type: 1
-      Index: -1
-      Enabled: 1
-      Color: {r: 0.7664424, g: 0.15407537, b: 0.47513685, a: 1}
-    m_DetectorSpaceType: 0
   - Tag: JumpObstacle
     Enabled: 1
     DetectionType: 0
@@ -596,11 +584,11 @@ MonoBehaviour:
       Enabled: 1
       Color: {r: 0.14157449, g: 0.79350877, b: 0.48927182, a: 1}
     m_DetectorSpaceType: 0
-  - Tag: Ramp
+  - Tag: TruckObstacle
     Enabled: 1
     DetectionType: 0
     Modifier: 0
-    Detectable: {fileID: 4695762599469296400, guid: caa3fd273abc626b3948b5394a52ea77, type: 3}
+    Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
     m_UserObservables:
       m_Observables: []
     m_Observables:
@@ -608,7 +596,21 @@ MonoBehaviour:
       Type: 1
       Index: -1
       Enabled: 1
-      Color: {r: 0.60723513, g: 0.1412044, b: 0.83968616, a: 1}
+      Color: {r: 0.7065759, g: 0.31230786, b: 0.4591834, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: RampObstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 5987895688188945368, guid: 2c3c01e09ad3e67099412f717152bd03, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.09672223, g: 0.010969383, b: 0.87402976, a: 1}
     m_DetectorSpaceType: 0
   m_RotationType: 0
   m_DetectionBounds:

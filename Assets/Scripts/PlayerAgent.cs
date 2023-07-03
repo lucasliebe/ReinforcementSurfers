@@ -82,12 +82,12 @@ public class PlayerAgent : Agent
             _playerController.TriggerIsSliding();
         }
 
-        if (actions.DiscreteActions[2] == 0)
-        {
-            _playerController.TriggerMultiplier();
-        } else if (actions.DiscreteActions[2] == 1)
-        {
-            _playerController.TriggerShield();
-        }
+        // if (actions.DiscreteActions[2] == 0)
+        // {
+        //     _playerController.TriggerMultiplier();
+        // } else if (actions.DiscreteActions[2] == 1)
+        // {
+        //     _playerController.TriggerShield();
+        // }
     }
 }

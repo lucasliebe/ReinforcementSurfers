@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
         EnableMultiplier();
         EnableShield();
         EndJumping();
+        rb.velocity = Vector3.zero;
         isCollided = false;
         isMoving = false;
         isSliding = false;
@@ -241,10 +242,11 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ramp"))
         {
-            rb.AddForce(Physics.gravity * -1.45f, ForceMode.Impulse);
+            rb.AddForce(Physics.gravity * -1.35f, ForceMode.VelocityChange);
             isJumping = true;
             Invoke(nameof(EndJumping), 0.3f);
         }
+
         if (isShielded) return;
         
         if (!isCollided && collision.gameObject.CompareTag("Coin"))
