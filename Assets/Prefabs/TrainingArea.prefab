@@ -544,7 +544,7 @@ MonoBehaviour:
     m_DetectorSpaceType: 0
   - Tag: TruckObstacle
     Enabled: 1
-    DetectionType: 0
+    DetectionType: 1
     Modifier: 0
     Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
     m_UserObservables:
@@ -558,7 +558,7 @@ MonoBehaviour:
     m_DetectorSpaceType: 0
   - Tag: RampObstacle
     Enabled: 1
-    DetectionType: 0
+    DetectionType: 1
     Modifier: 0
     Detectable: {fileID: 5987895688188945368, guid: 2c3c01e09ad3e67099412f717152bd03, type: 3}
     m_UserObservables:

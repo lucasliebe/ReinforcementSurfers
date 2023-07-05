@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2695939377758697878}
   - component: {fileID: 6949559792035411319}
   - component: {fileID: 3021097319088813372}
+  - component: {fileID: 467160476842767524}
   m_Layer: 0
   m_Name: SideR
   m_TagString: Obstacle
@@ -115,6 +116,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &467160476842767524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826390243947306947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Shape:
+    m_ScanResultsByLOD: []
+    m_LocalPoints: []
+    m_WorldPoints: []
+    m_MergeDisconnected: 0
+    m_Flatten: 0
+    m_MaxLOD: 0
+    m_SelectedLOD: 0
+    m_ScanLOD: 0
+    m_GizmoLOD: 0
+    m_Projection: 0
+    m_PointCount: 0
+    m_DrawGrid: 0
 --- !u!1 &3977615350429632840
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +214,7 @@ GameObject:
   - component: {fileID: 626069201922688705}
   - component: {fileID: 7883410570264977578}
   - component: {fileID: 6355237113396671546}
+  - component: {fileID: 6593470061103812523}
   m_Layer: 0
   m_Name: SideL
   m_TagString: Obstacle
@@ -290,6 +317,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &6593470061103812523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5390751705567786028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Shape:
+    m_ScanResultsByLOD: []
+    m_LocalPoints: []
+    m_WorldPoints: []
+    m_MergeDisconnected: 0
+    m_Flatten: 0
+    m_MaxLOD: 0
+    m_SelectedLOD: 0
+    m_ScanLOD: 0
+    m_GizmoLOD: 0
+    m_Projection: 0
+    m_PointCount: 0
+    m_DrawGrid: 0
 --- !u!1 &8537072708682042460
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +355,7 @@ GameObject:
   - component: {fileID: 7563236712323310516}
   - component: {fileID: 5236218707222568028}
   - component: {fileID: 1402220561681112308}
+  - component: {fileID: 6898857452420394368}
   m_Layer: 0
   m_Name: Front
   m_TagString: Obstacle
@@ -405,3 +458,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &6898857452420394368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8537072708682042460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Shape:
+    m_ScanResultsByLOD: []
+    m_LocalPoints: []
+    m_WorldPoints: []
+    m_MergeDisconnected: 0
+    m_Flatten: 0
+    m_MaxLOD: 0
+    m_SelectedLOD: 0
+    m_ScanLOD: 0
+    m_GizmoLOD: 0
+    m_Projection: 0
+    m_PointCount: 0
+    m_DrawGrid: 0

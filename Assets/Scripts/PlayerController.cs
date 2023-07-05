@@ -40,10 +40,14 @@ public class PlayerController : MonoBehaviour
 
     public void Reset()
     {
-        CancelInvoke();
-        EnableMultiplier();
-        EnableShield();
-        EndJumping();
+        StopCoroutine(nameof(EndMultiplier));
+        StopCoroutine(nameof(EndShield));
+        StopCoroutine(nameof(EndJumping));
+        canMultiply = true;
+        multiplierIcon.SetActive(true);
+        canShield = true;
+        shieldIcon.SetActive(true);
+        isJumping = false;
         rb.velocity = Vector3.zero;
         isCollided = false;
         isMoving = false;
@@ -118,7 +122,12 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPosition = CalculateTargetPosition();
         Vector3 targetRotation = CalculateTargetRotation();
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        if (transform.localPosition.y < 0) {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f) + new Vector3(0,1.2f,0);
+        } else {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
+        }
+
         //rb.MovePosition(Vector3.Lerp(transform.localPosition, targetPosition, 0.15f));
         //rb.AddForce((targetPosition - transform.localPosition) * 0.2f, ForceMode.Impulse);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
@@ -163,12 +172,13 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
             isJumping = true;
-            Invoke(nameof(EndJumping), 0.7f);
+            StartCoroutine(EndJumping(0.7f));
         }
     }
 
-    private void EndJumping()
+    private IEnumerator EndJumping(float wait)
     {
+        yield return new WaitForSecondsRealtime(wait);
         isJumping = false;
     }
 
@@ -189,19 +199,16 @@ public class PlayerController : MonoBehaviour
             material.color += new Color(0, 255, 0);
             canMultiply = false;
             multiplierIcon.SetActive(false);
-            Invoke(nameof(EndMultiplier), 3f);
+            StartCoroutine(EndMultiplier());
         }
     }
     
-    private void EndMultiplier()
+    private IEnumerator EndMultiplier()
     {
+        yield return new WaitForSecondsRealtime(3);
         multiplier = 1;
         material.color -= new Color(0, 255, 0);
-        Invoke(nameof(EnableMultiplier), 6f);
-    }
-
-    private void EnableMultiplier()
-    {
+        yield return new WaitForSecondsRealtime(6);
         canMultiply = true;
         multiplierIcon.SetActive(true);
     }
@@ -214,19 +221,16 @@ public class PlayerController : MonoBehaviour
             material.color += new Color(0, 0, 255);
             canShield = false;
             shieldIcon.SetActive(false);
-            Invoke(nameof(EndShield), 1.5f);
+            StartCoroutine(EndShield());
         }
     }
     
-    private void EndShield()
+    private IEnumerator EndShield()
     {
+        yield return new WaitForSecondsRealtime(1.5f);
         isShielded = false;
         material.color -= new Color(0, 0, 255);
-        Invoke(nameof(EnableShield), 10f);
-    }
-
-    private void EnableShield()
-    {
+        yield return new WaitForSecondsRealtime(10);
         canShield = true;
         shieldIcon.SetActive(true);
     }
@@ -242,17 +246,14 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ramp"))
         {
-            Debug.Log("found ramp!");
             if (collision.gameObject.GetComponent<BoxCollider>() == null)
             {
-                Debug.Log("Boosting!");
-                rb.AddForce(Physics.gravity * -1.35f, ForceMode.VelocityChange);
+                rb.AddForce(Physics.gravity * -1.4f, ForceMode.VelocityChange);
                 isJumping = true;
-                Invoke(nameof(EndJumping), 0.3f);
+                StartCoroutine(EndJumping(0.3f));
             }
             else
             {
-                Debug.Log("Teleporting!");
                 transform.localPosition += new Vector3(0, 2.5f, 0);
             }
         }
