@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public TMP_Text scoreText;
     public GameObject multiplierIcon;
     public GameObject shieldIcon;
+    
     private GroundController groundController;
     private Rigidbody rb;
     private Material material;
@@ -26,8 +27,13 @@ public class PlayerController : MonoBehaviour
     private bool isSliding = false;
     private bool isJumping = false;
     private bool isShielded = false;
+    
     public bool canMultiply = true;
     public bool canShield = true;
+
+    private Coroutine multiplierCoroutine;
+    private Coroutine shieldCoroutine;
+    private Coroutine jumpCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -40,9 +46,9 @@ public class PlayerController : MonoBehaviour
 
     public void Reset()
     {
-        StopCoroutine(nameof(EndMultiplier));
-        StopCoroutine(nameof(EndShield));
-        StopCoroutine(nameof(EndJumping));
+        if (multiplierCoroutine != null) StopCoroutine(multiplierCoroutine);
+        if (shieldCoroutine != null) StopCoroutine(shieldCoroutine);
+        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
         canMultiply = true;
         multiplierIcon.SetActive(true);
         canShield = true;
@@ -172,7 +178,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
             isJumping = true;
-            StartCoroutine(EndJumping(0.7f));
+            jumpCoroutine = StartCoroutine(EndJumping(0.7f));
         }
     }
 
@@ -199,7 +205,7 @@ public class PlayerController : MonoBehaviour
             material.color += new Color(0, 255, 0);
             canMultiply = false;
             multiplierIcon.SetActive(false);
-            StartCoroutine(EndMultiplier());
+            multiplierCoroutine = StartCoroutine(EndMultiplier());
         }
     }
     
@@ -221,7 +227,7 @@ public class PlayerController : MonoBehaviour
             material.color += new Color(0, 0, 255);
             canShield = false;
             shieldIcon.SetActive(false);
-            StartCoroutine(EndShield());
+            shieldCoroutine = StartCoroutine(EndShield());
         }
     }
     
@@ -250,7 +256,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.AddForce(Physics.gravity * -1.4f, ForceMode.VelocityChange);
                 isJumping = true;
-                StartCoroutine(EndJumping(0.3f));
+                jumpCoroutine = StartCoroutine(EndJumping(0.3f));
             }
             else
             {
