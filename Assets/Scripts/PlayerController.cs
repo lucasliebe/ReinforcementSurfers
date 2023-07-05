@@ -242,9 +242,19 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ramp"))
         {
-            rb.AddForce(Physics.gravity * -1.35f, ForceMode.VelocityChange);
-            isJumping = true;
-            Invoke(nameof(EndJumping), 0.3f);
+            Debug.Log("found ramp!");
+            if (collision.gameObject.GetComponent<BoxCollider>() == null)
+            {
+                Debug.Log("Boosting!");
+                rb.AddForce(Physics.gravity * -1.35f, ForceMode.VelocityChange);
+                isJumping = true;
+                Invoke(nameof(EndJumping), 0.3f);
+            }
+            else
+            {
+                Debug.Log("Teleporting!");
+                transform.localPosition += new Vector3(0, 2.5f, 0);
+            }
         }
 
         if (isShielded) return;

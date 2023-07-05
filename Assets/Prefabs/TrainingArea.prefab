@@ -542,11 +542,11 @@ MonoBehaviour:
       Enabled: 1
       Color: {r: 0.72006714, g: 0.42392784, b: 0.0027362371, a: 1}
     m_DetectorSpaceType: 0
-  - Tag: Coin
+  - Tag: TruckObstacle
     Enabled: 1
     DetectionType: 0
     Modifier: 0
-    Detectable: {fileID: -7373046747246466193, guid: a27b05d6a4c8e4ba79d619e15557a59e, type: 3}
+    Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
     m_UserObservables:
       m_Observables: []
     m_Observables:
@@ -554,7 +554,21 @@ MonoBehaviour:
       Type: 1
       Index: -1
       Enabled: 1
-      Color: {r: 0.17046371, g: 0.364068, b: 0.91204435, a: 1}
+      Color: {r: 0.7065759, g: 0.31230786, b: 0.4591834, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: RampObstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 5987895688188945368, guid: 2c3c01e09ad3e67099412f717152bd03, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.09672223, g: 0.010969383, b: 0.87402976, a: 1}
     m_DetectorSpaceType: 0
   - Tag: JumpObstacle
     Enabled: 1
@@ -584,11 +598,11 @@ MonoBehaviour:
       Enabled: 1
       Color: {r: 0.14157449, g: 0.79350877, b: 0.48927182, a: 1}
     m_DetectorSpaceType: 0
-  - Tag: TruckObstacle
+  - Tag: Coin
     Enabled: 1
     DetectionType: 0
     Modifier: 0
-    Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
+    Detectable: {fileID: -7373046747246466193, guid: a27b05d6a4c8e4ba79d619e15557a59e, type: 3}
     m_UserObservables:
       m_Observables: []
     m_Observables:
@@ -596,21 +610,7 @@ MonoBehaviour:
       Type: 1
       Index: -1
       Enabled: 1
-      Color: {r: 0.7065759, g: 0.31230786, b: 0.4591834, a: 1}
-    m_DetectorSpaceType: 0
-  - Tag: RampObstacle
-    Enabled: 1
-    DetectionType: 0
-    Modifier: 0
-    Detectable: {fileID: 5987895688188945368, guid: 2c3c01e09ad3e67099412f717152bd03, type: 3}
-    m_UserObservables:
-      m_Observables: []
-    m_Observables:
-    - Name: One-Hot
-      Type: 1
-      Index: -1
-      Enabled: 1
-      Color: {r: 0.09672223, g: 0.010969383, b: 0.87402976, a: 1}
+      Color: {r: 0.17046371, g: 0.364068, b: 0.91204435, a: 1}
     m_DetectorSpaceType: 0
   m_RotationType: 0
   m_DetectionBounds:
