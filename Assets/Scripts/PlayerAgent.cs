@@ -12,6 +12,8 @@ public class PlayerAgent : Agent
     private GroundController _groundController;
 
     private PlayerController _playerController;
+
+    private bool isEnding = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +23,7 @@ public class PlayerAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        _groundController.Cleanup();
-        _groundController.Setup();
+        base.OnEpisodeBegin();
     }
 
     // public override void Heuristic(in ActionBuffers actionsOut)
@@ -48,6 +49,15 @@ public class PlayerAgent : Agent
     //     }
     // }
 
+    public void EndOurEpisode()
+    {
+        isEnding = true;
+        _groundController.Cleanup();
+        _groundController.Setup();
+        EndEpisode();
+        isEnding = false;
+    }
+
     public override void CollectObservations(VectorSensor sensor)
     {
         for (int i = 0; i < (int)_groundController.lanes; i++)
@@ -60,11 +70,13 @@ public class PlayerAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+        if (isEnding) return;
         Tuple<bool, int, int> state = _playerController.GetState();
         AddReward(state.Item2 * 0.4f * state.Item3);
         if (state.Item1) {
             AddReward(-1f * state.Item3);
-            EndEpisode();
+            EndOurEpisode();
+            return;
         }
         if (actions.DiscreteActions[0] != 1) {
             AddReward(0f);

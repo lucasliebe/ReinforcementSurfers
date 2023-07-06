@@ -7,8 +7,8 @@ public class TrainingGroupController : MonoBehaviour
 	public int numTrainingAreas = 10;
 	public int numAreasPerRow = 10;
 
-	public int areaOffsetX = 10;
-	public int areaOffsetY = 7;
+	public int areaOffsetX = 20;
+	public int areaOffsetY = 20;
 
 	public GameObject trainingAreaPrefab;
 

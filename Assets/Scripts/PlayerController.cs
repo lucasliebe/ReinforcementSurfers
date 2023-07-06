@@ -25,7 +25,12 @@ public class PlayerController : MonoBehaviour
     private bool isCollided = false;
     private bool isMoving = false;
     private bool isSliding = false;
-    private bool isJumping = false;
+    public bool isFrozen = false;
+
+    private bool isJumping
+    {
+        get => jumpCoroutine != null;
+    }
     private bool isShielded = false;
     
     public bool canMultiply = true;
@@ -46,14 +51,14 @@ public class PlayerController : MonoBehaviour
 
     public void Reset()
     {
-        if (multiplierCoroutine != null) StopCoroutine(multiplierCoroutine);
-        if (shieldCoroutine != null) StopCoroutine(shieldCoroutine);
-        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+        StopAllCoroutines();
+        jumpCoroutine = null;
+        multiplierCoroutine = null;
+        shieldCoroutine = null;
         canMultiply = true;
         multiplierIcon.SetActive(true);
         canShield = true;
         shieldIcon.SetActive(true);
-        isJumping = false;
         rb.velocity = Vector3.zero;
         isCollided = false;
         isMoving = false;
@@ -177,7 +182,6 @@ public class PlayerController : MonoBehaviour
         if (!isJumping)
         {
             rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
-            isJumping = true;
             jumpCoroutine = StartCoroutine(EndJumping(0.7f));
         }
     }
@@ -185,7 +189,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator EndJumping(float wait)
     {
         yield return new WaitForSecondsRealtime(wait);
-        isJumping = false;
+        jumpCoroutine = null;
     }
 
     public void TriggerIsSliding()
@@ -243,6 +247,10 @@ public class PlayerController : MonoBehaviour
 
     public Tuple<bool, int, int> GetState()
     {
+        if (isFrozen)
+        {
+            return new Tuple<bool, int, int>(false, 0, 0);
+        }
         Tuple<bool, int, int> state = new Tuple<bool, int, int>(isCollided, score, multiplier);
         score = 0;
         return state;
@@ -255,7 +263,7 @@ public class PlayerController : MonoBehaviour
             if (collision.gameObject.GetComponent<BoxCollider>() == null)
             {
                 rb.AddForce(Physics.gravity * -1.4f, ForceMode.VelocityChange);
-                isJumping = true;
+                if(isJumping) StopCoroutine(jumpCoroutine);
                 jumpCoroutine = StartCoroutine(EndJumping(0.3f));
             }
             else
@@ -264,7 +272,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (isShielded) return;
+        if (isShielded || isFrozen) return;
         
         if (!isCollided && collision.gameObject.CompareTag("Coin"))
         {

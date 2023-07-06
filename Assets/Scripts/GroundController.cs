@@ -15,6 +15,7 @@ public class GroundController : MonoBehaviour
     public GameObject trashcanPrefab;
     private SpawnController[] spawners;
     private GameObject trashcan;
+    private PlayerController player;
     private int[] lanesOccupied;
     private int resetTimer = 0;
     private int prefabSpawnTimer = 0;
@@ -30,10 +31,13 @@ public class GroundController : MonoBehaviour
     void Start()
     {
         Setup();
+        trashcan = Instantiate(trashcanPrefab, transform.position + new Vector3(0, 2.5f, -40), Quaternion.identity, transform.parent);
+        trashcan.transform.localScale += new Vector3(transform.localScale.x, 0, 0);
     }
 
     public void Setup()
     {
+        player = transform.parent.Find("Player").GetComponent<PlayerController>();
         startSpeed = speed;
         spawners = new SpawnController[lanes];
         lanesOccupied = new int[lanes];
@@ -46,20 +50,18 @@ public class GroundController : MonoBehaviour
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
             spawners[i] = spawner.GetComponent<SpawnController>();
         }
-        trashcan = Instantiate(trashcanPrefab, transform.position + new Vector3(0, 2.5f, -40), Quaternion.identity, transform.parent);
-        trashcan.transform.localScale += new Vector3(transform.localScale.x, 0, 0);
+        player.isFrozen = false;
     }
 
     public void Cleanup()
     {
         // Time.timeScale = 0;
+        player.isFrozen = true;
         foreach (var spawner in spawners)
         {
             Destroy(spawner.gameObject);
         }
-        Destroy(trashcan);
-        Transform parentT = transform.parent;
-        foreach (Transform childT in parentT)
+        foreach (Transform childT in transform.parent)
         {
             if(childT.CompareTag("TruckObstacle")) Destroy(childT.gameObject);
             if(childT.CompareTag("RampObstacle")) Destroy(childT.gameObject);
@@ -67,8 +69,7 @@ public class GroundController : MonoBehaviour
             if(childT.CompareTag("JumpObstacle")) Destroy(childT.gameObject);
             if(childT.CompareTag("SlideObstacle")) Destroy(childT.gameObject);
         }
-        parentT.Find("Player").GetComponent<PlayerController>().Reset();
-        speed = startSpeed;
+        player.Reset();
         // Time.timeScale = 1;
     }
 
