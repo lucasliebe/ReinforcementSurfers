@@ -143,15 +143,15 @@ public class GroundController : MonoBehaviour
                     break;
                 case 2:
                     spawners[i].triggerJumpObstacle();
-                    lanesOccupied[i] = 1;
+                    lanesOccupied[i] = 2;
                     break;
                 case 3:
                     spawners[i].triggerSlideObstacle();
-                    lanesOccupied[i] = 2;
+                    lanesOccupied[i] = 3;
                     break;
                 case 4:
                     spawners[i].triggerCoin();
-                    lanesOccupied[i] = 3;
+                    lanesOccupied[i] = 4;
                     break;
             }
         }

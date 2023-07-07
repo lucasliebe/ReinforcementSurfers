@@ -401,6 +401,7 @@ MonoBehaviour:
   scoreText: {fileID: 8020626539228099867}
   multiplierIcon: {fileID: 1253257126698190505}
   shieldIcon: {fileID: 245995733403083698}
+  isFrozen: 0
   canMultiply: 1
   canShield: 1
 --- !u!54 &4387001844303986642

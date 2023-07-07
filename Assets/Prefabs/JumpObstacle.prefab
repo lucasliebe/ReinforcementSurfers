@@ -67,7 +67,8 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 118
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8366038813349785678, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
 --- !u!1 &1585226028827013814 stripped
 GameObject:
@@ -99,3 +100,19 @@ MonoBehaviour:
     m_Projection: 0
     m_PointCount: 0
     m_DrawGrid: 0
+--- !u!54 &2661987493456960421
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585226028827013814}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
