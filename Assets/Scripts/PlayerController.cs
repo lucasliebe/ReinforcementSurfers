@@ -5,12 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public TMP_Text scoreText;
     public GameObject multiplierIcon;
     public GameObject shieldIcon;
-    
+
     private GroundController groundController;
     private Rigidbody rb;
     private Material material;
@@ -20,19 +19,19 @@ public class PlayerController : MonoBehaviour
     private int score = 0;
     private int multiplier = 1;
     private float total_score = 0f;
-    private float[] movingTargetXs = {-3f, 0, 3f};
-    
+    private float[] movingTargetXs = { -3f, 0, 3f };
+
     private bool isCollided = false;
     private bool isMoving = false;
     private bool isSliding = false;
     public bool isFrozen = false;
 
-    private bool isJumping
-    {
+    private bool isJumping {
         get => jumpCoroutine != null;
     }
+
     private bool isShielded = false;
-    
+
     public bool canMultiply = true;
     public bool canShield = true;
 
@@ -41,16 +40,14 @@ public class PlayerController : MonoBehaviour
     private Coroutine jumpCoroutine;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         groundController = GameObject.Find("Ground").GetComponent<GroundController>();
         rb = GetComponent<Rigidbody>();
-        material = GetComponent<Renderer>().material; 
+        material = GetComponent<Renderer>().material;
         material.color = new Color(0, 0, 0);
     }
 
-    public void Reset()
-    {
+    public void Reset() {
         StopAllCoroutines();
         jumpCoroutine = null;
         multiplierCoroutine = null;
@@ -73,68 +70,50 @@ public class PlayerController : MonoBehaviour
         material.color = new Color(0, 0, 0);
     }
 
-    private Vector3 CalculateTargetPosition()
-    {
+    private Vector3 CalculateTargetPosition() {
         Vector3 targetPosition = transform.localPosition;
 
-        if (isMoving)
-        {
+        if (isMoving) {
             targetPosition.x = movingTargetXs[desiredLane];
         }
+
         targetPosition.y += 0.1f;
 
         return targetPosition;
     }
 
-    private Vector3 CalculateTargetRotation()
-    {
-        return (isSliding) ? new Vector3(90, 0, 0) : new Vector3(0, 0, 0);
-    }
+    private Vector3 CalculateTargetRotation() { return (isSliding) ? new Vector3(90, 0, 0) : new Vector3(0, 0, 0); }
 
-    void Update()
-    {
-        scoreText.text = "Score: " + MathF.Round(total_score*1000f)/1000f;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            desiredLane--; 
+    void Update() {
+        scoreText.text = "Score: " + MathF.Round(total_score * 1000f) / 1000f;
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            desiredLane--;
             MoveLane();
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
+        } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
             desiredLane++;
             MoveLane();
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
+        } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
             TriggerIsJumping();
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
+        } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
             TriggerIsSliding();
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
+        } else if (Input.GetKeyDown(KeyCode.M)) {
             TriggerMultiplier();
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
+        } else if (Input.GetKeyDown(KeyCode.S)) {
             TriggerShield();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        } else if (Input.GetKeyDown(KeyCode.Escape)) {
             // ReSharper disable twice Unity.PerformanceCriticalCodeInvocation
             groundController.Cleanup();
             groundController.Setup();
         }
     }
 
-    void FixedUpdate() 
-    {
+    void FixedUpdate() {
         Vector3 targetPosition = CalculateTargetPosition();
         Vector3 targetRotation = CalculateTargetRotation();
 
         if (transform.localPosition.y < 0) {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f) + new Vector3(0,1.2f,0);
+            transform.localPosition =
+                Vector3.Lerp(transform.localPosition, targetPosition, 0.15f) + new Vector3(0, 1.2f, 0);
         } else {
             transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, 0.15f);
         }
@@ -143,68 +122,54 @@ public class PlayerController : MonoBehaviour
         //rb.AddForce((targetPosition - transform.localPosition) * 0.2f, ForceMode.Impulse);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(targetRotation), 0.5f);
         // "Snap" position and rotation to prevent endless linear interpolation
-        if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f)
-        {
+        if (Vector3.Distance(transform.localPosition, targetPosition) < 0.1f) {
             //transform.localPosition = targetPosition;
             rb.MovePosition(targetPosition);
             isMoving = false;
         }
-        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.1f)
-        {
+
+        if (Vector3.Distance(transform.localRotation.eulerAngles, targetRotation) < 0.1f) {
             transform.localRotation = Quaternion.Euler(targetRotation);
             isSliding = false;
         }
+
         rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
         total_score += 0.0005f * multiplier;
     }
-    
-    public void MoveLane()
-    {
+
+    public void MoveLane() {
         isMoving = true;
         // if (desiredLane < 0 || desiredLane > groundController.lanes - 1)
         //    isCollided = true;
         desiredLane = Math.Clamp(desiredLane, 0, groundController.lanes - 1);
         currentLane = desiredLane;
     }
-    
-    public int GetCurrentLane()
-    {
-        return currentLane;
-    }
 
-    public void SetDesiredLane(int lane)
-    {
-        desiredLane = lane;
-    }
+    public int GetCurrentLane() { return currentLane; }
 
-    public void TriggerIsJumping()
-    {
-        if (!isJumping)
-        {
+    public void SetDesiredLane(int lane) { desiredLane = lane; }
+
+    public void TriggerIsJumping() {
+        if (!isJumping) {
             rb.AddForce(Physics.gravity * -1.5f, ForceMode.Impulse);
             jumpCoroutine = StartCoroutine(EndJumping(0.7f));
         }
     }
 
-    private IEnumerator EndJumping(float wait)
-    {
+    private IEnumerator EndJumping(float wait) {
         yield return new WaitForSecondsRealtime(wait);
         jumpCoroutine = null;
     }
 
-    public void TriggerIsSliding()
-    {
-        if (transform.rotation.x <= 0) 
-        {
+    public void TriggerIsSliding() {
+        if (transform.rotation.x <= 0) {
             rb.AddForce(Physics.gravity * 2f, ForceMode.Impulse);
             isSliding = true;
         }
     }
-    
-    public void TriggerMultiplier()
-    {
-        if (canMultiply)
-        {
+
+    public void TriggerMultiplier() {
+        if (canMultiply) {
             multiplier = 2;
             material.color += new Color(0, 255, 0);
             canMultiply = false;
@@ -212,9 +177,8 @@ public class PlayerController : MonoBehaviour
             multiplierCoroutine = StartCoroutine(EndMultiplier());
         }
     }
-    
-    private IEnumerator EndMultiplier()
-    {
+
+    private IEnumerator EndMultiplier() {
         yield return new WaitForSecondsRealtime(3);
         multiplier = 1;
         material.color -= new Color(0, 255, 0);
@@ -222,11 +186,9 @@ public class PlayerController : MonoBehaviour
         canMultiply = true;
         multiplierIcon.SetActive(true);
     }
-    
-    public void TriggerShield()
-    {
-        if (canShield)
-        {
+
+    public void TriggerShield() {
+        if (canShield) {
             isShielded = true;
             material.color += new Color(0, 0, 255);
             canShield = false;
@@ -234,9 +196,10 @@ public class PlayerController : MonoBehaviour
             shieldCoroutine = StartCoroutine(EndShield());
         }
     }
-    
-    private IEnumerator EndShield()
-    {
+
+    public void ForceShieldChange() { }
+
+    private IEnumerator EndShield() {
         yield return new WaitForSecondsRealtime(1.5f);
         isShielded = false;
         material.color -= new Color(0, 0, 255);
@@ -245,52 +208,39 @@ public class PlayerController : MonoBehaviour
         shieldIcon.SetActive(true);
     }
 
-    public Tuple<bool, int, int> GetState()
-    {
-        if (isFrozen)
-        {
+    public Tuple<bool, int, int> GetState() {
+        if (isFrozen) {
             return new Tuple<bool, int, int>(false, 0, 0);
         }
+
         Tuple<bool, int, int> state = new Tuple<bool, int, int>(isCollided, score, multiplier);
         score = 0;
         return state;
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ramp"))
-        {
-            if (collision.gameObject.GetComponent<BoxCollider>() == null)
-            {
-                rb.AddForce(Physics.gravity * -1.4f, ForceMode.VelocityChange);
-                if(isJumping) StopCoroutine(jumpCoroutine);
-                jumpCoroutine = StartCoroutine(EndJumping(0.3f));
-            }
-            else
-            {
-                transform.localPosition += new Vector3(0, 2.5f, 0);
-            }
+    void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.CompareTag("Ramp")) {
+            //rb.velocity = Vector3.zero;
+            //rb.angularVelocity = Vector3.zero;
+            transform.localPosition = new Vector3(transform.localPosition.x, 4f, transform.localPosition.z);
         }
 
         if (isShielded || isFrozen) return;
-        
-        if (!isCollided && collision.gameObject.CompareTag("Coin"))
-        {
+
+        if (!isCollided && collision.gameObject.CompareTag("Coin")) {
             score++;
             total_score += 0.4f * multiplier;
-            Destroy(collision.gameObject);  
-        }
-        else if (!isCollided && 
-            (collision.gameObject.CompareTag("Obstacle") ||
-            collision.gameObject.CompareTag("JumpObstacle") ||
-            collision.gameObject.CompareTag("SlideObstacle")))
-        {
-			Debug.Log("Game Over! Total Score: " + MathF.Round(total_score*1000f)/1000f);
+            Destroy(collision.gameObject);
+        } else if (!isCollided &&
+                   (collision.gameObject.CompareTag("Obstacle") ||
+                    collision.gameObject.CompareTag("JumpObstacle") ||
+                    collision.gameObject.CompareTag("SlideObstacle"))) {
+            Debug.Log("Game Over! Total Score: " + MathF.Round(total_score * 1000f) / 1000f);
             score = 0;
             isCollided = true;
             // Time.timeScale = 0;
             // UnityEditor.EditorApplication.isPlaying = false;
             // Application.Quit();
         }
-	}
+    }
 }
