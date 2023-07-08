@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleTimePrefabs : MonoBehaviour
+public class ObstacleTimePrefabs
 {
     enum ObstacleType
     {
