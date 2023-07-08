@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 6 channels x 5 width x 20 height
+  m_ObservationShape: 6 channels x 5 width x 16 height
   m_SensorName: GridSensor
   m_ObservationStacks: 1
   m_CompressionType: 1
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_GridShape:
     NumChannels: 6
     Width: 5
-    Height: 20
+    Height: 16
   m_ClearCacheOnReset: 1
   m_ColliderBufferSize: 64
   m_TmpObjectToAdd: {fileID: 0}
@@ -616,14 +616,14 @@ MonoBehaviour:
   m_RotationType: 0
   m_DetectionBounds:
     m_Center: {x: 0, y: 0, z: 20}
-    m_Extent: {x: 5, y: 2, z: 20}
+    m_Extent: {x: 6.25, y: 2, z: 20}
   m_EditorBounds:
     m_Center: {x: 0, y: 0, z: 20}
-    m_Extent: {x: 5, y: 2, z: 20}
-  m_CellSize: 2
-  m_NumCells: {x: 5, y: 1, z: 20}
-  m_DetectionSize: {x: 10, y: 4, z: 40}
-  m_BoundsSize: {x: 10, y: 4, z: 40}
+    m_Extent: {x: 6.25, y: 2, z: 20}
+  m_CellSize: 2.5
+  m_NumCells: {x: 5, y: 1, z: 16}
+  m_DetectionSize: {x: 12.5, y: 4, z: 40}
+  m_BoundsSize: {x: 12.5, y: 4, z: 40}
   m_Offset: {x: 0, y: 0, z: 20}
 --- !u!1 &4387001845696453424
 GameObject:
@@ -901,6 +901,9 @@ MonoBehaviour:
   spawnerPrefab: {fileID: 321550200316889854, guid: d877e84c6668e95e6afa8284dd97a054, type: 3}
   trashcanPrefab: {fileID: 321550200316889854, guid: 58bd5bcb9195d2c9a9e652b120288123, type: 3}
   testMode: 0
+  waveDistance: 18
+  specialEvents: 1
+  specialEventDistance: 1000
 --- !u!114 &6550991646205487562
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class GroundController : MonoBehaviour
     private PlayerController player;
     private int[] lanesOccupied;
     private int resetTimer = 0;
+    private int specialTimer = 0;
     private int prefabSpawnTimer = 0;
     private int randomSpawnTimer = 0;
     private bool canSpawn = true;
@@ -26,6 +27,10 @@ public class GroundController : MonoBehaviour
     public bool testMode;
     private int decision = 0;
     (int, Dictionary<int, Dictionary<int, int>>) randomObstacle;
+    
+    public int waveDistance = 18;
+    public bool specialEvents = true;
+    public uint specialEventDistance = 1000;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +54,9 @@ public class GroundController : MonoBehaviour
             GameObject spawner = Instantiate(spawnerPrefab, transform.position + new Vector3(0+getLaneDistance()*factor, 1.5f, offset), Quaternion.identity, transform.parent);
             spawner.transform.localScale += new Vector3(getLaneDistance(), 0, 0);
             spawners[i] = spawner.GetComponent<SpawnController>();
-        }
+        } 
+        specialTimer = 0;
+        decision = 0;
         player.isFrozen = false;
     }
 
@@ -103,6 +110,9 @@ public class GroundController : MonoBehaviour
                         break;
                     case 5:
                         spawners[obstacle.Key].triggerRamp();
+                        break;
+                    case 6:
+                        spawners[obstacle.Key].triggerCoin(true);
                         break;
                 }
             }
@@ -163,14 +173,22 @@ public class GroundController : MonoBehaviour
         {
             // Distance between intervals of obstacles
             resetTimer += 1;
-            if (resetTimer > (int)(18 / speed))
+            if(specialEvents) specialTimer += 1;
+            if (resetTimer > (int)(waveDistance / speed))
             {
                 decision = rnd.Next(1, 3);
                 resetTimer = 0;
                 lanesOccupied = new int[lanes];
                 Array.Fill(lanesOccupied, -1);
-                if (testMode)
+                if (specialTimer > specialEventDistance)
                 {
+                    randomObstacle = obstacleTimePrefabs.getSpecialObstacle();
+                    decision = 1;
+                    specialTimer = 0;
+                }
+                else if (testMode)
+                {
+                    // TODO: Keep or remove? -> predefined training course or include random generated obstacles?
                     decision = 1;
                     randomObstacle = obstacleTimePrefabs.getTestObstacle();
                 }
