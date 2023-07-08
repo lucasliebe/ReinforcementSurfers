@@ -242,7 +242,7 @@ public class ObstacleTimePrefabs : MonoBehaviour
             }  
         ),
 
-        (400, new Dictionary<int, Dictionary<int, int>>()
+        (500, new Dictionary<int, Dictionary<int, int>>()
             {
                 {0, new Dictionary<int, int>()
                     {
@@ -254,12 +254,12 @@ public class ObstacleTimePrefabs : MonoBehaviour
                         {0, (int)ObstacleType.SlideObstacle}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.JumpObstacle}
                     }
                 },
-                {200, new Dictionary<int, int>()
+                {300, new Dictionary<int, int>()
                     {
                         {0, (int)ObstacleType.None}, {1, (int)ObstacleType.SlideObstacle}, {2, (int)ObstacleType.None}
                     }
                 },
-                {260, new Dictionary<int, int>()
+                {360, new Dictionary<int, int>()
                     {
                         {0, (int)ObstacleType.Train}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.Train}
                     }

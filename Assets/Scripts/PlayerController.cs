@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
         score = 0;
         total_score = 0;
         multiplier = 1;
-        transform.localPosition = new Vector3(0, 1.1f, -6);
+        transform.localPosition = new Vector3(0, 6.0f, -6);
         material.color = new Color(0, 0, 0);
     }
 
