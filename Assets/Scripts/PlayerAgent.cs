@@ -55,6 +55,7 @@ public class PlayerAgent : Agent
         {
             sensor.AddObservation(_playerController.GetCurrentLane() == i ? 1.0f : 0.0f);
         }
+        sensor.AddObservation(_playerController.GetCurrentPosition().y);
         base.CollectObservations(sensor);
     }
 

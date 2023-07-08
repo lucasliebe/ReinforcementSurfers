@@ -82,6 +82,11 @@ public class PlayerController : MonoBehaviour {
         return targetPosition;
     }
 
+    public Vector3 GetCurrentPosition()
+    {
+        return transform.localPosition;
+    }
+
     private Vector3 CalculateTargetRotation() { return (isSliding) ? new Vector3(90, 0, 0) : new Vector3(0, 0, 0); }
 
     void Update() {
