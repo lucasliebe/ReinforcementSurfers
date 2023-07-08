@@ -40,9 +40,10 @@ public class SpawnController : MonoBehaviour
         obstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
     }
     
-    public void triggerCoin()
+    public void triggerCoin(bool isUpper = false)
     {
-        GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity, _trainingArea.transform);
+        Vector3 offset = isUpper ? new Vector3(0f, 2.7f, 0f) : new Vector3(0f, 0f, 0f);   
+        GameObject coin = Instantiate(coinPrefab, transform.position + offset, Quaternion.identity, _trainingArea.transform);
         coin.GetComponent<ObstacleController>().SetSpeed(ground.speed);
     }
 
