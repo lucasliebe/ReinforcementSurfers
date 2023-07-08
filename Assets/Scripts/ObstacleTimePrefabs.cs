@@ -10,7 +10,10 @@ public class ObstacleTimePrefabs
         Train,
         JumpObstacle,
         SlideObstacle,
-        Coin
+        Coin,
+        Ramp,
+        CoinUpper,
+        FasterTruck
     }
 
     // List containing tuples of dictionaries of dictionaries
@@ -160,30 +163,30 @@ public class ObstacleTimePrefabs
             }  
         ),
 
-        // (400, new Dictionary<int, Dictionary<int, int>>()
-        //     {
-        //         {0, new Dictionary<int, int>()
-        //             {
-        //                 {0, (int)ObstacleType.None}, {1, (int)ObstacleType.Train}, {2, (int)ObstacleType.None}
-        //             }
-        //         },
-        //         {20, new Dictionary<int, int>()
-        //             {
-        //                 {0, (int)ObstacleType.JumpObstacle}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
-        //             }
-        //         },
-        //         {200, new Dictionary<int, int>()
-        //             {
-        //                 {0, (int)ObstacleType.Train}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
-        //             }
-        //         },
-        //         {250, new Dictionary<int, int>()
-        //             {
-        //                 {0, (int)ObstacleType.None}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.Train}
-        //             }
-        //         },
-        //     }  
-        // ),
+        (400, new Dictionary<int, Dictionary<int, int>>()
+            {
+                {0, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.None}, {1, (int)ObstacleType.Train}, {2, (int)ObstacleType.None}
+                    }
+                },
+                {20, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.JumpObstacle}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
+                    }
+                },
+                {200, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.Train}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
+                    }
+                },
+                {250, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.None}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.Train}
+                    }
+                },
+            }  
+        ),
 
         (400, new Dictionary<int, Dictionary<int, int>>()
             {
@@ -308,6 +311,46 @@ public class ObstacleTimePrefabs
                 {280, new Dictionary<int, int>()
                     {
                         {0, (int)ObstacleType.None}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.Coin}
+                    }
+                },
+            }  
+        ), 
+        // Faster truck
+        (800, new Dictionary<int, Dictionary<int, int>>()
+            {
+                {300, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.None}, {1, (int)ObstacleType.Train}, {2, (int)ObstacleType.None}
+                    }
+                },
+                {650, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.None}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.Train}
+                    }
+                },
+                {700, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.FasterTruck}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
+                    }
+                },
+            }  
+        ), 
+        // Faster truck with obstacles in front
+        (800, new Dictionary<int, Dictionary<int, int>>()
+            {
+                {0, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.JumpObstacle}, {1, (int)ObstacleType.JumpObstacle}, {2, (int)ObstacleType.SlideObstacle}
+                    }
+                },
+                {300, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.None}, {1, (int)ObstacleType.Train}, {2, (int)ObstacleType.Train}
+                    }
+                },
+                {600, new Dictionary<int, int>()
+                    {
+                        {0, (int)ObstacleType.FasterTruck}, {1, (int)ObstacleType.None}, {2, (int)ObstacleType.None}
                     }
                 },
             }  

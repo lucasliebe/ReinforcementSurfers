@@ -25,10 +25,13 @@ public class SpawnController : MonoBehaviour
         
     }
 
-    public void triggerTruck()
+    public void triggerTruck(float? speed = null, float speedIncrement = 0 )
     {
+        float truckSpeed = (speed == null) ? ground.speed : (float)speed;
+
         GameObject obstacle = Instantiate(truckPrefab, transform.position, Quaternion.identity, _trainingArea.transform);
-        obstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
+        obstacle.GetComponent<ObstacleController>().SetSpeed(truckSpeed);
+        obstacle.GetComponent<ObstacleController>().SetSpeedIncrement(speedIncrement);
     }
     
     public void triggerRamp()
@@ -53,5 +56,10 @@ public class SpawnController : MonoBehaviour
     {
         GameObject slideObstacle = Instantiate(slideObstaclePrefab, transform.position + new Vector3(0f, 0.95f, 0f), Quaternion.identity, _trainingArea.transform);
         slideObstacle.GetComponent<ObstacleController>().SetSpeed(ground.speed);
+    }
+
+    public void triggerFasterTruck()
+    {
+        triggerTruck(speed: ground.speed * 2);
     }
 }

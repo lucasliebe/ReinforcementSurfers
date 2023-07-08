@@ -104,6 +104,11 @@ public class GroundController : MonoBehaviour
                     case 5:
                         spawners[obstacle.Key].triggerRamp();
                         break;
+                    case 6:
+                        break;
+                    case 7:
+                        spawners[obstacle.Key].triggerFasterTruck();
+                        break;
                 }
             }
         }
