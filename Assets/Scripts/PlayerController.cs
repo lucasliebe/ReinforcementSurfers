@@ -225,8 +225,9 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.CompareTag("Ramp")) {
-            //rb.velocity = Vector3.zero;
-            //rb.angularVelocity = Vector3.zero;
+            Vector3 normal = collision.contacts[0].normal;
+
+            if (normal != new Vector3(0, 1, 0)) Die();
             transform.localPosition = new Vector3(transform.localPosition.x, 4f, transform.localPosition.z);
         }
 
@@ -240,12 +241,14 @@ public class PlayerController : MonoBehaviour {
                    (collision.gameObject.CompareTag("Obstacle") ||
                     collision.gameObject.CompareTag("JumpObstacle") ||
                     collision.gameObject.CompareTag("SlideObstacle"))) {
-            Debug.Log("Game Over! Total Score: " + MathF.Round(total_score * 1000f) / 1000f);
-            score = 0;
-            isCollided = true;
-            // Time.timeScale = 0;
-            // UnityEditor.EditorApplication.isPlaying = false;
-            // Application.Quit();
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Game Over! Total Score: " + MathF.Round(total_score * 1000f) / 1000f);
+        score = 0;
+        isCollided = true;
     }
 }
