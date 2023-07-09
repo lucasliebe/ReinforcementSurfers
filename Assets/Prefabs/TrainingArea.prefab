@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 6 channels x 4 width x 16 height
+  m_ObservationShape: 6 channels x 5 width x 17 height
   m_SensorName: GridSensorBase
   m_ObservationStacks: 1
   m_CompressionType: 1
@@ -524,8 +524,8 @@ MonoBehaviour:
     IsStandby: 0
   m_GridShape:
     NumChannels: 6
-    Width: 4
-    Height: 16
+    Width: 5
+    Height: 17
   m_ClearCacheOnReset: 1
   m_ColliderBufferSize: 64
   m_TmpObjectToAdd: {fileID: 0}
@@ -617,14 +617,14 @@ MonoBehaviour:
   m_RotationType: 0
   m_DetectionBounds:
     m_Center: {x: 0, y: 2.5, z: 20}
-    m_Extent: {x: 5, y: 3.25, z: 20}
+    m_Extent: {x: 6.25, y: 3.25, z: 21.25}
   m_EditorBounds:
     m_Center: {x: 0, y: 2.5, z: 20}
-    m_Extent: {x: 5, y: 3.25, z: 20}
+    m_Extent: {x: 6.25, y: 3.25, z: 21.25}
   m_CellSize: 2.5
-  m_NumCells: {x: 4, y: 1, z: 16}
-  m_DetectionSize: {x: 10, y: 6.5, z: 40}
-  m_BoundsSize: {x: 10, y: 6.5, z: 40}
+  m_NumCells: {x: 5, y: 1, z: 17}
+  m_DetectionSize: {x: 12.5, y: 6.5, z: 42.5}
+  m_BoundsSize: {x: 12.5, y: 6.5, z: 42.5}
   m_Offset: {x: 0, y: 2.5, z: 20}
 --- !u!114 &2930067681524104988
 MonoBehaviour:
@@ -638,7 +638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 6 channels x 4 width x 16 height
+  m_ObservationShape: 6 channels x 5 width x 17 height
   m_SensorName: GridSensorDown
   m_ObservationStacks: 1
   m_CompressionType: 1
@@ -656,8 +656,8 @@ MonoBehaviour:
     IsStandby: 0
   m_GridShape:
     NumChannels: 6
-    Width: 4
-    Height: 16
+    Width: 5
+    Height: 17
   m_ClearCacheOnReset: 1
   m_ColliderBufferSize: 64
   m_TmpObjectToAdd: {fileID: 0}
@@ -749,14 +749,14 @@ MonoBehaviour:
   m_RotationType: 0
   m_DetectionBounds:
     m_Center: {x: 0, y: -2.5, z: 20}
-    m_Extent: {x: 5, y: 1.5, z: 20}
+    m_Extent: {x: 6.25, y: 1.5, z: 21.25}
   m_EditorBounds:
     m_Center: {x: 0, y: -2.5, z: 20}
-    m_Extent: {x: 5, y: 1.5, z: 20}
+    m_Extent: {x: 6.25, y: 1.5, z: 21.25}
   m_CellSize: 2.5
-  m_NumCells: {x: 4, y: 1, z: 16}
-  m_DetectionSize: {x: 10, y: 3, z: 40}
-  m_BoundsSize: {x: 10, y: 3, z: 40}
+  m_NumCells: {x: 5, y: 1, z: 17}
+  m_DetectionSize: {x: 12.5, y: 3, z: 42.5}
+  m_BoundsSize: {x: 12.5, y: 3, z: 42.5}
   m_Offset: {x: 0, y: -2.5, z: 20}
 --- !u!1 &4387001845696453424
 GameObject:
