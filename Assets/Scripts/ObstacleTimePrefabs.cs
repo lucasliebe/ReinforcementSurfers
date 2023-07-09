@@ -43,7 +43,7 @@ public class ObstacleTimePrefabs
             }  
         ),
         // "Tunnel" Obstacle left
-        (650, new Dictionary<int, Dictionary<int, int>>()
+        (800, new Dictionary<int, Dictionary<int, int>>()
             {
                 {0, new Dictionary<int, int>()
                     {
@@ -83,7 +83,7 @@ public class ObstacleTimePrefabs
             }  
         ),
         // "Tunnel" Obstacle right
-        (650, new Dictionary<int, Dictionary<int, int>>()
+        (800, new Dictionary<int, Dictionary<int, int>>()
             {
                 {0, new Dictionary<int, int>()
                     {
@@ -123,7 +123,7 @@ public class ObstacleTimePrefabs
             }
         ),
         // "Tunnel" with extra obstacles on the way
-        (650, new Dictionary<int, Dictionary<int, int>>()
+        (800, new Dictionary<int, Dictionary<int, int>>()
             {
                 {0, new Dictionary<int, int>()
                     {
@@ -518,7 +518,7 @@ public class ObstacleTimePrefabs
             }  
         ),
         // "Tunnel" with extra obstacles on the way (switched compared to training)
-        (650, new Dictionary<int, Dictionary<int, int>>()
+        (800, new Dictionary<int, Dictionary<int, int>>()
             {
                 {0, new Dictionary<int, int>()
                     {
