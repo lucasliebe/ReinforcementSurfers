@@ -76,21 +76,21 @@ public class PlayerAgent : Agent
         } else {
             AddReward(0.001f * (float) Math.Pow(state.Item3, 2));
         }
-        if (actions.DiscreteActions[1] == 0)
+        if (actions.DiscreteActions[1] == 1)
         {
             _playerController.TriggerIsJumping();
         }
-        else if (actions.DiscreteActions[1] == 1)
+        else if (actions.DiscreteActions[1] == 2)
         {
             _playerController.TriggerIsSliding();
         }
 
-        // if (actions.DiscreteActions[2] == 0)
-        // {
-        //     _playerController.TriggerMultiplier();
-        // } else if (actions.DiscreteActions[2] == 1)
-        // {
-        //     _playerController.TriggerShield();
-        // }
+        if (actions.DiscreteActions[2] == 1) 
+        { 
+            _playerController.TriggerMultiplier();
+        } else if (actions.DiscreteActions[2] == 2)
+        {
+            _playerController.TriggerShield();
+        }
     }
 }
