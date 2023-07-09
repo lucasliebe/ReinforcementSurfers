@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: 4387001844303986640}
   - component: {fileID: 4387001844303986641}
   - component: {fileID: 8454697730754007428}
+  - component: {fileID: 7915750724961678648}
   - component: {fileID: 2930067681524104988}
   m_Layer: 0
   m_Name: Player
@@ -315,7 +316,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4387001844303986659}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: -6}
+  m_LocalPosition: {x: 0, y: 1, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -493,7 +494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8abecd5902d09449e947799d9330a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2930067681524104988
+--- !u!114 &7915750724961678648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -505,8 +506,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 6 channels x 5 width x 16 height
-  m_SensorName: GridSensor
+  m_ObservationShape: 6 channels x 4 width x 16 height
+  m_SensorName: GridSensorBase
   m_ObservationStacks: 1
   m_CompressionType: 1
   m_ObservationType: 0
@@ -523,7 +524,7 @@ MonoBehaviour:
     IsStandby: 0
   m_GridShape:
     NumChannels: 6
-    Width: 5
+    Width: 4
     Height: 16
   m_ClearCacheOnReset: 1
   m_ColliderBufferSize: 64
@@ -615,16 +616,148 @@ MonoBehaviour:
     m_DetectorSpaceType: 0
   m_RotationType: 0
   m_DetectionBounds:
-    m_Center: {x: 0, y: 0, z: 20}
-    m_Extent: {x: 6.25, y: 2, z: 20}
+    m_Center: {x: 0, y: 2.5, z: 20}
+    m_Extent: {x: 5, y: 3.25, z: 20}
   m_EditorBounds:
-    m_Center: {x: 0, y: 0, z: 20}
-    m_Extent: {x: 6.25, y: 2, z: 20}
+    m_Center: {x: 0, y: 2.5, z: 20}
+    m_Extent: {x: 5, y: 3.25, z: 20}
   m_CellSize: 2.5
-  m_NumCells: {x: 5, y: 1, z: 16}
-  m_DetectionSize: {x: 12.5, y: 4, z: 40}
-  m_BoundsSize: {x: 12.5, y: 4, z: 40}
-  m_Offset: {x: 0, y: 0, z: 20}
+  m_NumCells: {x: 4, y: 1, z: 16}
+  m_DetectionSize: {x: 10, y: 6.5, z: 40}
+  m_BoundsSize: {x: 10, y: 6.5, z: 40}
+  m_Offset: {x: 0, y: 2.5, z: 20}
+--- !u!114 &2930067681524104988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4387001844303986659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec8722596ac4fb346894cd62602b3999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ObservationShape: 6 channels x 4 width x 16 height
+  m_SensorName: GridSensorDown
+  m_ObservationStacks: 1
+  m_CompressionType: 1
+  m_ObservationType: 0
+  m_ChannelLabels: []
+  m_Debug_CreateSensorOnAwake: 0
+  m_Debug_CreateSensorOnValidate: 1
+  m_Debug_FrameInterval: 1
+  m_Debug_DrawGridBuffer: 0
+  m_Debug_GridBufferDrawer:
+    Context: {fileID: 0}
+    Editor: {fileID: 0}
+    GridSizeRatio: 0
+    IsEnabled: 0
+    IsStandby: 0
+  m_GridShape:
+    NumChannels: 6
+    Width: 4
+    Height: 16
+  m_ClearCacheOnReset: 1
+  m_ColliderBufferSize: 64
+  m_TmpObjectToAdd: {fileID: 0}
+  m_GameObjectSettingsList:
+  - Tag: Wall
+    Enabled: 1
+    DetectionType: 1
+    Modifier: 0
+    Detectable: {fileID: 1560526239240861018}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.72006714, g: 0.42392784, b: 0.0027362371, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: TruckObstacle
+    Enabled: 1
+    DetectionType: 1
+    Modifier: 0
+    Detectable: {fileID: 1504948193383509930, guid: d668dc848534bcbe3908263b30f263c6, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.7065759, g: 0.31230786, b: 0.4591834, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: RampObstacle
+    Enabled: 1
+    DetectionType: 1
+    Modifier: 0
+    Detectable: {fileID: 5987895688188945368, guid: 2c3c01e09ad3e67099412f717152bd03, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.09672223, g: 0.010969383, b: 0.87402976, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: JumpObstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: 2401875008471486636, guid: 9ba45ea5c50832f4299d1adfd13fd146, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.6143836, g: 0.10984991, b: 0.08872233, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: SlideObstacle
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: -2153071789201093107, guid: fc7833b699a9e5a44ad24e222d66736b, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.14157449, g: 0.79350877, b: 0.48927182, a: 1}
+    m_DetectorSpaceType: 0
+  - Tag: Coin
+    Enabled: 1
+    DetectionType: 0
+    Modifier: 0
+    Detectable: {fileID: -7373046747246466193, guid: a27b05d6a4c8e4ba79d619e15557a59e, type: 3}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: One-Hot
+      Type: 1
+      Index: -1
+      Enabled: 1
+      Color: {r: 0.17046371, g: 0.364068, b: 0.91204435, a: 1}
+    m_DetectorSpaceType: 0
+  m_RotationType: 0
+  m_DetectionBounds:
+    m_Center: {x: 0, y: -2.5, z: 20}
+    m_Extent: {x: 5, y: 1.5, z: 20}
+  m_EditorBounds:
+    m_Center: {x: 0, y: -2.5, z: 20}
+    m_Extent: {x: 5, y: 1.5, z: 20}
+  m_CellSize: 2.5
+  m_NumCells: {x: 4, y: 1, z: 16}
+  m_DetectionSize: {x: 10, y: 3, z: 40}
+  m_BoundsSize: {x: 10, y: 3, z: 40}
+  m_Offset: {x: 0, y: -2.5, z: 20}
 --- !u!1 &4387001845696453424
 GameObject:
   m_ObjectHideFlags: 0
