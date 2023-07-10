@@ -91,25 +91,25 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
         scoreText.text = "Score: " + MathF.Round(total_score * 1000f) / 1000f;
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            desiredLane--;
-            MoveLane();
-        } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            desiredLane++;
-            MoveLane();
-        } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            TriggerIsJumping();
-        } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-            TriggerIsSliding();
-        } else if (Input.GetKeyDown(KeyCode.M)) {
-            TriggerMultiplier();
-        } else if (Input.GetKeyDown(KeyCode.S)) {
-            TriggerShield();
-        } else if (Input.GetKeyDown(KeyCode.Escape)) {
-            // ReSharper disable twice Unity.PerformanceCriticalCodeInvocation
-            groundController.Cleanup();
-            groundController.Setup();
-        }
+        // if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+        //     desiredLane--;
+        //     MoveLane();
+        // } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+        //     desiredLane++;
+        //     MoveLane();
+        // } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+        //     TriggerIsJumping();
+        // } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+        //     TriggerIsSliding();
+        // } else if (Input.GetKeyDown(KeyCode.M)) {
+        //     TriggerMultiplier();
+        // } else if (Input.GetKeyDown(KeyCode.S)) {
+        //     TriggerShield();
+        // } else if (Input.GetKeyDown(KeyCode.Escape)) {
+        //     // ReSharper disable twice Unity.PerformanceCriticalCodeInvocation
+        //     groundController.Cleanup();
+        //     groundController.Setup();
+        // }
     }
 
     void FixedUpdate() {

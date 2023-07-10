@@ -26,28 +26,41 @@ public class PlayerAgent : Agent
         _groundController.Setup();
     }
 
-    // public override void Heuristic(in ActionBuffers actionsOut)
-    // {
-    //     ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
-    //     discreteActions[0] = 1;
-    //     discreteActions[1] = 2;
-    //     if (Input.GetKey(KeyCode.LeftArrow))
-    //     {
-    //         discreteActions[0] = 0;
-    //     }
-    //     if (Input.GetKey(KeyCode.RightArrow))
-    //     {
-    //         discreteActions[0] = 2;
-    //     }
-    //     if (Input.GetKey(KeyCode.UpArrow))
-    //     {
-    //         discreteActions[1] = 0;
-    //     }
-    //     if (Input.GetKey(KeyCode.DownArrow))
-    //     {
-    //         discreteActions[1] = 1;
-    //     }
-    // }
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        discreteActions[0] = 1;
+        discreteActions[1] = 0;
+        discreteActions[2] = 0;
+        
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            discreteActions[0] = 0;
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            discreteActions[0] = 2;
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            discreteActions[1] = 1;
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            discreteActions[1] = 2;
+        }
+        // discreteActions[2] does only react in 1 of 100 cases. If we swapped item usage
+        // and jump/slide, so that item usage is in discreteActions[1], it would work. But
+        // jump/slide would not work anymore.
+        if (Input.GetKeyDown(KeyCode.M)) 
+        {
+            discreteActions[2] = 1;
+        } 
+        if (Input.GetKeyDown(KeyCode.S)) 
+        {
+            discreteActions[2] = 2;
+        }
+    }
 
     public override void CollectObservations(VectorSensor sensor)
     {
