@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour {
     private bool isSliding = false;
     public bool isFrozen = false;
 
+    public bool KeepStatistics = false;
+    private Dictionary<string, float> statistics = new Dictionary<string, float>();
+
     private bool isJumping {
         get => jumpCoroutine != null;
     }
@@ -242,15 +245,57 @@ public class PlayerController : MonoBehaviour {
                     collision.gameObject.CompareTag("JumpObstacle") ||
                     collision.gameObject.CompareTag("SlideObstacle"))) {
             
-            Debug.Log("Tag: " + collision.gameObject.tag + " | Name: " + collision.gameObject.name);
+            // Debug.Log("Tag: " + collision.gameObject.tag + " | Name: " + collision.gameObject.name);
+
+            if (KeepStatistics) AddStatistics(collision.gameObject.tag, total_score);
             Die();
         }
     }
 
     private void Die()
     {
-        Debug.Log("Game Over! Total Score: " + MathF.Round(total_score * 1000f) / 1000f);
+        // Debug.Log("Game Over! Total Score: " + MathF.Round(total_score * 1000f) / 1000f);
         score = 0;
         isCollided = true;
+    }
+
+    private void AddStatistics(string tag, float score)
+    {
+        if (!statistics.ContainsKey(tag))
+            statistics.Add(tag, 1);
+        else
+            statistics[tag]++;
+        if (!statistics.ContainsKey("num_rounds"))
+            statistics.Add("num_rounds", 1);
+        else
+            statistics["num_rounds"]++;
+        if (!statistics.ContainsKey("sum_scores"))
+            statistics.Add("sum_scores", score);
+        else
+            statistics["sum_scores"] += score;
+    }
+
+    private void SaveStatistics()
+    {
+        var timestamp = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        var path = "statistics-" + timestamp + ".txt";
+        string content = "";
+        foreach (var entry in statistics)
+        {
+            content += entry.Key + ": " + entry.Value + "\n";
+        }
+        System.IO.File.WriteAllText(path, content);
+    }
+
+    private void OnApplicationQuit() {
+        if (KeepStatistics && statistics.ContainsKey("num_rounds") && statistics.ContainsKey("sum_scores"))
+        {
+            statistics.Add("avg_score", statistics["sum_scores"] / statistics["num_rounds"]);
+            foreach (var entry in statistics)
+            {
+                Debug.Log(entry.Key + ": " + entry.Value + "\n");
+            }
+            SaveStatistics();
+        }
     }
 }
