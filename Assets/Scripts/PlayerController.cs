@@ -241,6 +241,8 @@ public class PlayerController : MonoBehaviour {
                    (collision.gameObject.CompareTag("Obstacle") ||
                     collision.gameObject.CompareTag("JumpObstacle") ||
                     collision.gameObject.CompareTag("SlideObstacle"))) {
+            
+            Debug.Log("Tag: " + collision.gameObject.tag + " | Name: " + collision.gameObject.name);
             Die();
         }
     }
