@@ -403,6 +403,7 @@ MonoBehaviour:
   multiplierIcon: {fileID: 1253257126698190505}
   shieldIcon: {fileID: 245995733403083698}
   isFrozen: 0
+  KeepStatistics: 0
   canMultiply: 1
   canShield: 1
 --- !u!54 &4387001844303986642
@@ -454,8 +455,8 @@ MonoBehaviour:
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
-      BranchSizes: 030000000300000003000000
-    VectorActionSize: 030000000300000003000000
+      BranchSizes: 0300000005000000
+    VectorActionSize: 0300000005000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1

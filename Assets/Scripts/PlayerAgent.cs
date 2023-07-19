@@ -96,12 +96,10 @@ public class PlayerAgent : Agent
         else if (actions.DiscreteActions[1] == 2)
         {
             _playerController.TriggerIsSliding();
-        }
-
-        if (actions.DiscreteActions[2] == 1) 
+        } else if (actions.DiscreteActions[1] == 3) 
         { 
             _playerController.TriggerMultiplier();
-        } else if (actions.DiscreteActions[2] == 2)
+        } else if (actions.DiscreteActions[1] == 4)
         {
             _playerController.TriggerShield();
         }
